@@ -66,9 +66,9 @@ const MoviePage = () => {
       <h1>Length: {movieDetails.runtime}</h1>
       <h1>Overview: {movieDetails.overview}</h1>
       <h1>Top Billed Cast</h1>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", width: "100%", overflowX: "scroll" }}>
         {topBilledCast.map((actor) => (
-          <div>
+          <div style={{ marginRight: "30px" }}>
             {actor.profile_path ? (
               <Link
                 to={{
@@ -91,8 +91,14 @@ const MoviePage = () => {
                 ></img>
               </Link>
             )}
-
-            <h4>{actor.original_name}</h4>
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to={{
+                pathname: `/actor/${actor.id}`,
+              }}
+            >
+              <h4>{actor.original_name}</h4>
+            </Link>
             <p>{actor.character}</p>
           </div>
         ))}

@@ -64,6 +64,9 @@ const NavBar = () => {
               ZMDBi
             </Typography>
           </Link>
+          <Link to="/discover">
+            <Button variant="contained">DISCOVER</Button>
+          </Link>
           <form
             style={{ display: "flex" }}
             onSubmit={(e) => {

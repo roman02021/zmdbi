@@ -114,34 +114,6 @@ const MainPage = () => {
             >
               <NavigateBeforeIcon fontSize="large" color="primary" />
             </IconButton>
-            {navNums.map((navNum) => (
-              <Grid item>
-                <Typography>
-                  {navNum === currentPage ? (
-                    <Link
-                      underline="always"
-                      variant="h6"
-                      color="primary"
-                      component="button"
-                      href="#"
-                      onClick={() => setCurrentPage(navNum)}
-                    >
-                      {navNum}
-                    </Link>
-                  ) : (
-                    <Link
-                      variant="h6"
-                      color="primary"
-                      component="button"
-                      href="#"
-                      onClick={() => setCurrentPage(navNum)}
-                    >
-                      {navNum}
-                    </Link>
-                  )}
-                </Typography>
-              </Grid>
-            ))}
             <IconButton onClick={() => setCurrentPage(currentPage + 1)}>
               <NavigateNextIcon fontSize="large" color="primary" />
             </IconButton>

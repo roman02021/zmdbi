@@ -77,7 +77,7 @@ const ActorPage = () => {
       <h1>Actor: {actorDetails.name}</h1>
       <h2>Personal Info</h2>
       <h2>Known For: {actorDetails.known_for_department}</h2>
-      <h2>Gender: {actorDetails.gender ? "Female" : "Male"}</h2>
+      <h2>Gender: {actorDetails.gender === 1 ? "Female" : "Male"}</h2>
       <h2>
         Birthday: {actorDetails.birthday}&nbsp;(
         {actorDetails.birthday &&

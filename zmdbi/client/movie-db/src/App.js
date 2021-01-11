@@ -1,5 +1,5 @@
 import "./App.css";
-import MainPage from "./components/MainPage";
+import DiscoverPage from "./components/DiscoverPage";
 import NavBar from "./components/NavBar";
 import MoviePage from "./components/MoviePage";
 import { Context } from "./contexts/Context";
@@ -21,6 +21,9 @@ function App() {
           <Switch>
             <Route path="/" exact>
               <LandingPage />
+            </Route>
+            <Route path="/discover" component={DiscoverPage}>
+              <DiscoverPage />
             </Route>
             <Route path="/details/:movieId" component={MoviePage}>
               <MoviePage />
