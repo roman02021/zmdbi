@@ -64,7 +64,7 @@ const NavBar = () => {
               ZMDBi
             </Typography>
           </Link>
-          <Link to="/discover">
+          <Link to="/discover" style={{ textDecoration: "none" }}>
             <Button variant="contained">DISCOVER</Button>
           </Link>
           <form

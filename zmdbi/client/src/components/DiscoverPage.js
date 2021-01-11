@@ -94,7 +94,7 @@ const MainPage = () => {
                 (post) =>
                   post.poster_path && (
                     <Grid lg={3} xs={6} md={4} item className={classes.movie}>
-                      <MovieCard post={post} />
+                      <MovieCard movie={post} imgSize="200" />
                     </Grid>
                   )
               )}

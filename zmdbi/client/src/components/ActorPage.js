@@ -9,7 +9,9 @@ const ActorPage = () => {
 
   const [allCredits, setAllCredits] = useState(undefined);
   const [changedCredits, setChangedCredts] = useState(undefined);
-
+  const [creditsSortedByPopularity, setCreditsSortedByPopularity] = useState(
+    []
+  );
   console.log("yes", allCredits);
   const currentYear = new Date().getFullYear();
 
@@ -51,7 +53,6 @@ const ActorPage = () => {
         return credit;
       }
     });
-    console.log("Ich bifafasfass", changedCredits);
     changedCredits = changedCredits.sort((credit1, credit2) =>
       Number(credit1.release_date.slice(0, 4)) >
       Number(credit2.release_date.slice(0, 4))
@@ -73,7 +74,6 @@ const ActorPage = () => {
   }, []);
   return (
     <div>
-      <h1>Hello</h1>
       <h1>Actor: {actorDetails.name}</h1>
       <h2>Personal Info</h2>
       <h2>Known For: {actorDetails.known_for_department}</h2>

@@ -16,25 +16,26 @@ import { Link, useParams } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles({
-  root: {
-    width: 200,
-    marginTop: 20,
-    height: 367,
-    justifySelf: "center",
-  },
-  cardMedia: {
-    height: 100,
-    paddingTop: "200px",
-  },
-});
-
-const MovieCard = (props) => {
+const MovieCard = ({ movie, imgSize }) => {
+  console.log(imgSize);
+  const useStyles = makeStyles({
+    root: {
+      minWidth: `${imgSize}`,
+      width: 200,
+      marginTop: 20,
+      height: 367,
+      justifySelf: "center",
+    },
+    cardMedia: {
+      height: 100,
+      paddingTop: "200px",
+    },
+  });
   const [dropDown, setDropDown] = useState(false);
-
+  console.log(movie);
   const classes = useStyles();
   return (
-    <Card className={classes.root} key={props.post.id}>
+    <Card className={classes.root} key={movie.id}>
       <CardHeader
         style={{ height: "0%", padding: 0 }}
         action={
@@ -61,20 +62,20 @@ const MovieCard = (props) => {
 
       <Link
         to={{
-          pathname: `/details/${props.post.id}`,
+          pathname: `/details/${movie.id}`,
         }}
       >
         <CardMedia
           className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w200${props.post.poster_path}`}
-          title={props.post.title}
+          image={`https://image.tmdb.org/t/p/w${imgSize}${movie.poster_path}`}
+          title={movie.title}
         ></CardMedia>
       </Link>
 
       <CardContent style={{ paddingTop: 5 }}>
         <Link
-          props={props.post.id}
-          to={`/details/${props.post.id}`}
+          props={movie.id}
+          to={`/details/${movie.id}`}
           style={{ textDecoration: "none" }}
         >
           <Typography
@@ -83,7 +84,7 @@ const MovieCard = (props) => {
             component="p"
             style={{ "&:hover": { cursor: "pointer" } }}
           >
-            {props.post.title}
+            {movie.title}
           </Typography>
         </Link>
         <Typography
@@ -92,7 +93,7 @@ const MovieCard = (props) => {
           component="p"
           style={{ verticalAlign: "text-bottom" }}
         >
-          {props.post.release_date.slice(0, 4)}
+          {movie.release_date.slice(0, 4)}
         </Typography>
       </CardContent>
     </Card>

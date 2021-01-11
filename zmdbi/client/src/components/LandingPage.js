@@ -7,7 +7,7 @@ const LandingPage = () => {
   const [moviesToday, setMoviesToday] = useState([]);
   const [thisWeekMovies, setThisWeekMovies] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
-
+  const [isRendered, setIsRendered] = useState(false);
   const getLandingPage = async () => {
     const topRated = await axios.get(
       "http://localhost:5000/landingPage/top_rated"
@@ -28,25 +28,27 @@ const LandingPage = () => {
       "http://localhost:5000/landingPage/upcoming"
     );
     setUpcoming(upcoming.data.results);
+    setIsRendered(true);
   };
-  console.log("hello", topRated);
+
   useEffect(() => {
     getLandingPage();
-    console.log("hello", topRated);
   }, []);
-
+  console.log("upcoming", upcoming);
   return (
-    <Container>
-      <Typography variant="h5">Upcoming</Typography>
-      <MovieSlider props={upcoming} />
+    isRendered && (
+      <Container>
+        <Typography variant="h5">Upcoming</Typography>
+        <MovieSlider props={upcoming} />
 
-      <Typography variant="h5">Movies Today</Typography>
-      <MovieSlider props={moviesToday} />
-      <Typography variant="h5">Movies This Week</Typography>
-      <MovieSlider props={thisWeekMovies} />
-      <Typography variant="h5">Top Rated</Typography>
-      <MovieSlider props={topRated} />
-    </Container>
+        <Typography variant="h5">Movies Today</Typography>
+        <MovieSlider props={moviesToday} />
+        <Typography variant="h5">Movies This Week</Typography>
+        <MovieSlider props={thisWeekMovies} />
+        <Typography variant="h5">Top Rated</Typography>
+        <MovieSlider props={topRated} />
+      </Container>
+    )
   );
 };
 
