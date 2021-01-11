@@ -18,6 +18,9 @@ const useStyles = makeStyles({
   navNums: {
     marginTop: 15,
   },
+  movie: {
+    maxWidth: "238px",
+  },
 });
 
 const MainPage = () => {
@@ -94,7 +97,7 @@ const MainPage = () => {
                 (post) =>
                   post.poster_path && (
                     <Grid lg={3} xs={6} md={4} item className={classes.movie}>
-                      <MovieCard movie={post} imgSize="200" />
+                      <MovieCard movie={post} imgWidth="200" imgHeight="300" />
                     </Grid>
                   )
               )}

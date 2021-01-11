@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Credits from "./Credits";
+import { Link } from "react-router-dom";
+import { Container, Typography } from "@material-ui/core";
 const ActorPage = () => {
   let { actorId } = useParams();
 
   const [actorDetails, setActorDetails] = useState({});
-
+  const [isLoaded, setIsLoaded] = useState(false);
   const [allCredits, setAllCredits] = useState(undefined);
   const [changedCredits, setChangedCredts] = useState(undefined);
   const [creditsSortedByPopularity, setCreditsSortedByPopularity] = useState(
@@ -61,11 +63,13 @@ const ActorPage = () => {
     );
 
     setChangedCredts(changedCredits);
+
     setAllCredits(undefined);
   };
   console.log("CHANGED CREDITS", changedCredits);
   if (allCredits) {
     renameAndSortByReleaseDate();
+    setIsLoaded(true);
   }
   console.log(changedCredits);
   useEffect(() => {
@@ -73,42 +77,66 @@ const ActorPage = () => {
     fetchAllCredits();
   }, []);
   return (
-    <div>
-      <h1>Actor: {actorDetails.name}</h1>
-      <h2>Personal Info</h2>
-      <h2>Known For: {actorDetails.known_for_department}</h2>
-      <h2>Gender: {actorDetails.gender === 1 ? "Female" : "Male"}</h2>
-      <h2>
-        Birthday: {actorDetails.birthday}&nbsp;(
-        {actorDetails.birthday &&
-          Number(currentYear - actorDetails.birthday.slice(0, 4))}
-        &nbsp;years old)
-      </h2>
-      <h2>Place of Birth: {actorDetails.place_of_birth}</h2>
-      <p>Biography: {actorDetails.biography}</p>
-      <img
-        src={`https://www.themoviedb.org/t/p/w185/${actorDetails.profile_path}`}
-      ></img>
-      <h1>
-        {changedCredits &&
-          changedCredits.map((credit) => (
-            <div style={{ display: "flex" }}>
-              <p>
-                {credit.release_date !== "3000" &&
-                  credit.release_date.slice(0, 4)}
-              </p>
-              <p>
-                {credit.title} as {credit.character}{" "}
-                {credit.episode_count === 1 &&
-                  ` (in ${credit.episode_count} episode)`}
-                {credit.episode_count > 1 &&
-                  ` (in ${credit.episode_count} episodes)`}
-              </p>
-              <p>{credit.media_type === "tv" ? "tv" : "movie"}</p>
-            </div>
-          ))}
-      </h1>
-    </div>
+    isLoaded && (
+      <Container style={{ display: "flex" }}>
+        <div style={{ width: "20%" }}>
+          <img
+            src={`https://www.themoviedb.org/t/p/w185/${actorDetails.profile_path}`}
+          ></img>
+
+          <Typography color="primary">Known For </Typography>
+          <Typography>{actorDetails.known_for_department}</Typography>
+          <Typography color="primary">Gender </Typography>
+          <Typography>
+            {actorDetails.gender === 1 ? "Female" : "Male"}
+          </Typography>
+          <Typography color="primary">Birthday</Typography>
+          <Typography>
+            {actorDetails.birthday}&nbsp;(
+            {actorDetails.birthday &&
+              Number(currentYear - actorDetails.birthday.slice(0, 4))}
+            &nbsp;years old)
+          </Typography>
+
+          <Typography color="primary">Place of Birth </Typography>
+          <Typography>{actorDetails.place_of_birth}</Typography>
+        </div>
+        <div style={{ width: "80%" }}>
+          <h1>Actor: {actorDetails.name}</h1>
+          <Typography>Biography: {actorDetails.biography}</Typography>
+          <Typography>
+            {changedCredits &&
+              changedCredits.map((credit) => (
+                <div style={{ display: "flex" }}>
+                  <Typography color="primary">
+                    {credit.release_date !== "3000" &&
+                      credit.release_date.slice(0, 4)}
+                    &nbsp;
+                  </Typography>
+
+                  <Typography>
+                    {console.log(credit)}
+                    <Link
+                      style={{ textDecoration: "none", color: "white" }}
+                      to={{
+                        pathname: `/details/${credit.id}`,
+                      }}
+                    >
+                      {credit.title}
+                    </Link>
+                    {credit.character && " as " + credit.character}
+                    {credit.episode_count === 1 &&
+                      ` (in ${credit.episode_count} episode)`}
+                    {credit.episode_count > 1 &&
+                      ` (in ${credit.episode_count} episodes)`}
+                  </Typography>
+                  {/* <p>{credit.media_type === "tv" ? "tv" : "movie"}</p> */}
+                </div>
+              ))}
+          </Typography>
+        </div>
+      </Container>
+    )
   );
 };
 

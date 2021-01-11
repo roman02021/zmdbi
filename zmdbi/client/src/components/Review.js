@@ -1,11 +1,11 @@
 import React from "react";
-
+import { Typography } from "@material-ui/core";
 const Review = ({ reviews }) => {
   return (
     <div>
-      <h2>Author: {reviews.author}</h2>
-      <h3>Created at: {reviews.created_at.slice(0, 10)}</h3>
-      <p>Review: {reviews.content}</p>
+      <Typography variant="h5">Author: {reviews.author}</Typography>
+      <Typography>Created at: {reviews.created_at.slice(0, 10)}</Typography>
+      <Typography>Review: {reviews.content}</Typography>
     </div>
   );
 };

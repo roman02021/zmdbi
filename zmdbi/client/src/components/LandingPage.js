@@ -38,14 +38,14 @@ const LandingPage = () => {
   return (
     isRendered && (
       <Container>
-        <Typography variant="h5">Upcoming</Typography>
+        <Typography variant="h3">Upcoming</Typography>
         <MovieSlider props={upcoming} />
 
-        <Typography variant="h5">Movies Today</Typography>
+        <Typography variant="h3">Movies Today</Typography>
         <MovieSlider props={moviesToday} />
-        <Typography variant="h5">Movies This Week</Typography>
+        <Typography variant="h3">Movies This Week</Typography>
         <MovieSlider props={thisWeekMovies} />
-        <Typography variant="h5">Top Rated</Typography>
+        <Typography variant="h3">Top Rated</Typography>
         <MovieSlider props={topRated} />
       </Container>
     )
