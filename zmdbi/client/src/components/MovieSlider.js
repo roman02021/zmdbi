@@ -18,7 +18,7 @@ const MovieSlider = ({ props }) => {
       component="div"
       m={5}
       bgcolor="background.paper"
-      height="370px"
+      height="auto"
       style={{
         margin: "0",
         marginTop: "15px",
@@ -26,6 +26,7 @@ const MovieSlider = ({ props }) => {
         width: "100%",
         overflowX: "scroll",
         overflowY: "hidden",
+        paddingBottom: "none",
       }}
     >
       {props.map((movie) => (

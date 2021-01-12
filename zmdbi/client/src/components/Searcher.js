@@ -1,5 +1,5 @@
 import React from "react";
 
-export const Comment = ({ comment }) => {
+export const Searcher = () => {
   return <div></div>;
 };

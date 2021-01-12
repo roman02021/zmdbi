@@ -1,14 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Paper, Typography } from "@material-ui/core";
 export const CreditPerson = ({ credits }) => {
   console.log(credits);
   return (
-    <div>
+    <Paper style={{ margin: "15px" }}>
       <div style={{ display: "flex" }}>
         <Link
           style={{
             textDecoration: "none",
-            color: "white",
+            color: "black",
             display: "flex",
           }}
           to={{
@@ -26,9 +27,9 @@ export const CreditPerson = ({ credits }) => {
             ></img>
           )}
 
-          <h1>{credits.name}</h1>
+          <Typography>{credits.name}</Typography>
         </Link>
       </div>
-    </div>
+    </Paper>
   );
 };

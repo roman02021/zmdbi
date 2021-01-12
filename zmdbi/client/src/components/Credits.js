@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory, Link } from "react-router-dom";
 import { CreditPerson } from "./CreditsPerson";
+import { Container, Typography } from "@material-ui/core";
 const Credits = () => {
   let history = useHistory();
   const credits = history.location.state.credits;
@@ -43,62 +44,63 @@ const Credits = () => {
     }
   });
   console.log(credits);
+
   return (
-    <div style={{ display: "flex" }}>
+    <Container style={{ display: "flex" }}>
       <div style={{ width: "50%" }}>
-        <h1>Actors</h1>
+        <Typography>Actors</Typography>
         {credits.cast.map((actor) => (
           <CreditPerson credits={actor} />
         ))}
       </div>
       <div style={{ width: "49%" }}>
-        <h3>Art</h3>
+        <Typography>Art</Typography>
         {art.map((art) => (
           <CreditPerson credits={art} />
         ))}
-        <h3>Camera</h3>
+        <Typography>Camera</Typography>
         {camera.map((camera) => (
           <CreditPerson credits={camera} />
         ))}
-        <h1>Crew</h1>
+        <Typography>Crew</Typography>
         {crewMembers.map((crewMembers) => (
           <CreditPerson credits={crewMembers} />
         ))}
 
-        <h3>Costume & Make-Up</h3>
+        <Typography>Costume & Make-Up</Typography>
         {costume.map((costume) => (
           <CreditPerson credits={costume} />
         ))}
-        <h3>Directing</h3>
+        <Typography>Directing</Typography>
         {directing.map((directing) => (
           <CreditPerson credits={directing} />
         ))}
-        <h3>Editing</h3>
+        <Typography>Editing</Typography>
         {editing.map((editing) => (
           <CreditPerson credits={editing} />
         ))}
-        <h3>Lighting</h3>
+        <Typography>Lighting</Typography>
         {lighting.map((lighting) => (
           <CreditPerson credits={lighting} />
         ))}
-        <h3>Production</h3>
+        <Typography>Production</Typography>
         {production.map((production) => (
           <CreditPerson credits={production} />
         ))}
-        <h3>Sound</h3>
+        <Typography>Sound</Typography>
         {sound.map((sound) => (
           <CreditPerson credits={sound} />
         ))}
-        <h3>Visual Effects</h3>
+        <Typography>Visual Effects</Typography>
         {visualEffects.map((visualEffects) => (
           <CreditPerson credits={visualEffects} />
         ))}
-        <h3>Writing</h3>
+        <Typography>Writing</Typography>
         {writing.map((writing) => (
           <CreditPerson credits={writing} />
         ))}
       </div>
-    </div>
+    </Container>
   );
 };
 

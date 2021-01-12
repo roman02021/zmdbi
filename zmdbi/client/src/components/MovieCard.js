@@ -15,22 +15,27 @@ import {
 import { Link, useParams } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/styles";
-
+import RatingWheel from "./RatingWheel";
 const MovieCard = ({ movie, imgWidth, imgHeight }) => {
   let borderRadius;
+  let height;
   if (imgWidth === "200") {
     borderRadius = 0;
+    height = 365;
   } else {
     borderRadius = 5;
+    height = "auto";
   }
+
   const useStyles = makeStyles({
     root: {
       overflow: "visible",
-      height: `auto`,
+      height: `${height}px`,
       justifySelf: "center",
       margin: "15px",
       position: "relative",
       boxShadow: "none",
+      padding: 0,
     },
     cardMedia: {
       width: `${imgWidth}px`,
@@ -43,6 +48,15 @@ const MovieCard = ({ movie, imgWidth, imgHeight }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root} key={movie.id}>
+      {imgWidth === "200" ? (
+        <RatingWheel
+          rating={movie.vote_average * 10}
+          discover={true}
+        ></RatingWheel>
+      ) : (
+        <RatingWheel rating={movie.vote_average * 10}></RatingWheel>
+      )}
+
       <ClickAwayListener onClickAway={() => setDropDown(false)}>
         <IconButton
           onClick={() => setDropDown(true)}
@@ -81,19 +95,19 @@ const MovieCard = ({ movie, imgWidth, imgHeight }) => {
           title={movie.title}
         ></CardMedia>
       </Link>
-      <CardContent style={{ paddingTop: "5px", paddingLeft: "5px" }}>
+      <CardContent style={{ padding: "0px", marginLeft: "3px" }}>
         <Link
           props={movie.id}
           to={`/details/${movie.id}`}
           style={{ textDecoration: "none" }}
         >
           <Typography
-            variant="body1"
+            variant="body2"
             color="textPrimary"
             component="p"
             style={{
               "&:hover": { cursor: "pointer" },
-              padding: "0px",
+              marginTop: "3px",
             }}
           >
             {movie.title}

@@ -85,29 +85,43 @@ const ActorPage = () => {
           ></img>
 
           <Typography color="primary">Known For </Typography>
-          <Typography>{actorDetails.known_for_department}</Typography>
+          <Typography>
+            {actorDetails.known_for_department
+              ? actorDetails.known_for_department
+              : "-"}
+          </Typography>
           <Typography color="primary">Gender </Typography>
           <Typography>
             {actorDetails.gender === 1 ? "Female" : "Male"}
           </Typography>
           <Typography color="primary">Birthday</Typography>
           <Typography>
-            {actorDetails.birthday}&nbsp;(
-            {actorDetails.birthday &&
-              Number(currentYear - actorDetails.birthday.slice(0, 4))}
-            &nbsp;years old)
+            {actorDetails.birthday
+              ? Number(currentYear - actorDetails.birthday.slice(0, 4))
+              : "-"}
           </Typography>
-
           <Typography color="primary">Place of Birth </Typography>
-          <Typography>{actorDetails.place_of_birth}</Typography>
+          <Typography>
+            {actorDetails.place_of_birth ? actorDetails.place_of_birth : "-"}
+          </Typography>
         </div>
         <div style={{ width: "80%" }}>
-          <h1>Actor: {actorDetails.name}</h1>
-          <Typography>Biography: {actorDetails.biography}</Typography>
+          <Typography variant="h4">{actorDetails.name}</Typography>
+          <Typography>Biography </Typography>
+          <Typography>
+            {actorDetails.biography ? actorDetails.biography : "-"}
+          </Typography>
           <Typography>
             {changedCredits &&
               changedCredits.map((credit) => (
-                <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    backgroundColor: "green",
+                    borderRadius: "5px",
+                    margin: "10px",
+                  }}
+                >
                   <Typography color="primary">
                     {credit.release_date !== "3000" &&
                       credit.release_date.slice(0, 4)}

@@ -3,6 +3,7 @@ import axios from "axios";
 import Review from "./Review";
 import { Container, Typography, Grid } from "@material-ui/core";
 import { useParams, useRouteMatch, Link } from "react-router-dom";
+import RatingWheel from "./RatingWheel";
 const MoviePage = () => {
   let match = useRouteMatch("/details/:id");
 
@@ -110,7 +111,12 @@ const MoviePage = () => {
                 ))}
               </Typography>
 
-              <Typography>Rating: {movieDetails.vote_average * 10}%</Typography>
+              <Typography>
+                Rating:{" "}
+                {movieDetails.vote_average
+                  ? movieDetails.vote_average * 10 + "%"
+                  : "Not Yet Rated"}
+              </Typography>
               <Typography>Length: {movieDetails.runtime}</Typography>
               <Typography>Overview: {movieDetails.overview}</Typography>
               <Typography>Director: {director}</Typography>
