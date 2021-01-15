@@ -2,101 +2,98 @@ import React from "react";
 import { useHistory, Link } from "react-router-dom";
 import { CreditPerson } from "./CreditsPerson";
 import { Container, Typography } from "@material-ui/core";
+import { kategorieTeilung } from "./kategorieTeilung";
+import { makeStyles } from "@material-ui/styles";
+
 const Credits = () => {
   let history = useHistory();
   const credits = history.location.state.credits;
 
   //crew categories
-  let production = [];
-  let art = [];
-  let crewMembers = [];
-  let costume = [];
-  let camera = [];
-  let directing = [];
-  let editing = [];
-  let lighting = [];
-  let sound = [];
-  let visualEffects = [];
-  let writing = [];
-  credits.crew.map((crew) => {
-    if (crew.department === "Production") {
-      production.push(crew);
-    } else if (crew.department === "Art") {
-      art.push(crew);
-    } else if (crew.department === "Crew") {
-      crewMembers.push(crew);
-    } else if (crew.department === "Costume & Make-Up") {
-      costume.push(crew);
-    } else if (crew.department === "Camera") {
-      camera.push(crew);
-    } else if (crew.department === "Directing") {
-      directing.push(crew);
-    } else if (crew.department === "Editing") {
-      editing.push(crew);
-    } else if (crew.department === "Lighting") {
-      lighting.push(crew);
-    } else if (crew.department === "Sound") {
-      sound.push(crew);
-    } else if (crew.department === "Visual Effects") {
-      visualEffects.push(crew);
-    } else if (crew.department === "Writing") {
-      writing.push(crew);
-    }
-  });
-  console.log(credits);
+
+  const categories = kategorieTeilung(credits);
 
   return (
-    <Container style={{ display: "flex" }}>
+    <Container
+      style={{
+        display: "flex",
+        justifyContent: "flex-start",
+        marginTop: "30px",
+      }}
+    >
       <div style={{ width: "50%" }}>
-        <Typography>Actors</Typography>
+        <Typography variant="h6">Actors</Typography>
         {credits.cast.map((actor) => (
           <CreditPerson credits={actor} />
         ))}
       </div>
-      <div style={{ width: "49%" }}>
-        <Typography>Art</Typography>
-        {art.map((art) => (
+      <div style={{ width: "50%" }}>
+        {categories.art.length !== 0 && (
+          <Typography variant="h6">Art</Typography>
+        )}
+        {categories.art.map((art) => (
           <CreditPerson credits={art} />
         ))}
-        <Typography>Camera</Typography>
-        {camera.map((camera) => (
+        {categories.camera.length !== 0 && (
+          <Typography variant="h6">Camera</Typography>
+        )}
+        {categories.camera.map((camera) => (
           <CreditPerson credits={camera} />
         ))}
-        <Typography>Crew</Typography>
-        {crewMembers.map((crewMembers) => (
+        {categories.crewMembers.length !== 0 && (
+          <Typography variant="h6">Crew Members</Typography>
+        )}
+        {categories.crewMembers.map((crewMembers) => (
           <CreditPerson credits={crewMembers} />
         ))}
 
-        <Typography>Costume & Make-Up</Typography>
-        {costume.map((costume) => (
+        {categories.costume.length !== 0 && (
+          <Typography variant="h6">Costume & Make-Up</Typography>
+        )}
+        {categories.costume.map((costume) => (
           <CreditPerson credits={costume} />
         ))}
-        <Typography>Directing</Typography>
-        {directing.map((directing) => (
+        {categories.directing.length !== 0 && (
+          <Typography variant="h6">Directing</Typography>
+        )}
+        {categories.directing.map((directing) => (
           <CreditPerson credits={directing} />
         ))}
-        <Typography>Editing</Typography>
-        {editing.map((editing) => (
+        {categories.editing.length !== 0 && (
+          <Typography variant="h6">Editing</Typography>
+        )}
+        {categories.editing.map((editing) => (
           <CreditPerson credits={editing} />
         ))}
-        <Typography>Lighting</Typography>
-        {lighting.map((lighting) => (
+        {categories.lighting.length !== 0 && (
+          <Typography variant="h6">Lighting</Typography>
+        )}
+        {categories.lighting.map((lighting) => (
           <CreditPerson credits={lighting} />
         ))}
-        <Typography>Production</Typography>
-        {production.map((production) => (
+        {categories.production.length !== 0 && (
+          <Typography variant="h6">Production</Typography>
+        )}
+        {categories.production.map((production) => (
           <CreditPerson credits={production} />
         ))}
-        <Typography>Sound</Typography>
-        {sound.map((sound) => (
+        {categories.sound.length !== 0 && (
+          <Typography variant="h6"> Sound</Typography>
+        )}
+        {categories.sound.map((sound) => (
           <CreditPerson credits={sound} />
         ))}
-        <Typography>Visual Effects</Typography>
-        {visualEffects.map((visualEffects) => (
+        {categories.visualEffects.length !== 0 && (
+          <Typography variant="h6">Visual Effects</Typography>
+        )}
+        {categories.visualEffects.map((visualEffects) => (
           <CreditPerson credits={visualEffects} />
         ))}
-        <Typography>Writing</Typography>
-        {writing.map((writing) => (
+        {categories.writing.length !== 0 && (
+          <Typography variant="h6">Writing</Typography>
+        )}
+
+        {categories.writing.map((writing) => (
           <CreditPerson credits={writing} />
         ))}
       </div>

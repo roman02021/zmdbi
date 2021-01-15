@@ -1,0 +1,32 @@
+<svg width="976" height="1297" viewBox="0 0 976 1297" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="976" height="1297" fill="#DBDBDB"/>
+<g filter="url(#filter0_d)">
+<mask id="path-1-inside-1" fill="white">
+<rect x="285" y="525" width="407" height="246" rx="29"/>
+</mask>
+<rect x="285" y="525" width="407" height="246" rx="29" fill="#DBDBDB"/>
+<rect x="285" y="525" width="407" height="246" rx="29" stroke="#B5B5B5" stroke-width="62" mask="url(#path-1-inside-1)"/>
+</g>
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="285" y="525" width="407" height="246">
+<mask id="path-2-inside-2" mask-type="luminance" fill="white">
+<rect x="285" y="525" width="407" height="246" rx="29"/>
+</mask>
+<rect x="285" y="525" width="407" height="246" rx="29" fill="#DBDBDB" stroke="#B5B5B5" stroke-width="62" mask="url(#path-2-inside-2)"/>
+</mask>
+<g mask="url(#mask0)">
+<circle cx="370.5" cy="600.5" r="33.5" fill="#B5B5B5"/>
+<path d="M402.826 643.286C404.009 642.043 405.991 642.043 407.174 643.286L497.176 737.933C498.993 739.843 497.639 743 495.002 743H314.998C312.361 743 311.007 739.843 312.824 737.933L402.826 643.286Z" fill="#B5B5B5"/>
+<rect x="498" y="659.248" width="113.768" height="205.579" rx="4" transform="rotate(-40.7399 498 659.248)" fill="#B5B5B5"/>
+</g>
+<defs>
+<filter id="filter0_d" x="281" y="525" width="415" height="254" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>

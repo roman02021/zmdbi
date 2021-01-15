@@ -1,7 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { Context } from "../contexts/Context";
+import { Context, useSearchRedirectUpdate } from "../contexts/SearchContext";
 import SearchIcon from "@material-ui/icons/Search";
+import { Redirect } from "react-router-dom";
+import SearchContext from "../contexts/SearchContext";
+import {
+  useSearch,
+  useSearchUpdate,
+  useSearchRedirect,
+} from "../contexts/SearchContext";
 import {
   AppBar,
   Toolbar,
@@ -21,7 +28,9 @@ const useStyles = makeStyles({
   root: {
     justifyContent: "space-between",
   },
-
+  logo: {
+    fontWeight: "600",
+  },
   belowAppBar: {
     display: "flex",
     alignItems: "flex-end",
@@ -30,74 +39,101 @@ const useStyles = makeStyles({
 });
 
 const NavBar = () => {
-  const { showMoviesMode, setShowMoviesMode, search, setSearch } = useContext(
-    Context
-  );
-  const [genre, setGenre] = useState("none");
-  const [sortBy, setSortBy] = useState("popularity");
-
+  const setSearchString = useSearchUpdate();
+  const searchString = useSearch();
+  const redirectToDiscover = useSearchRedirect();
+  const redirectToDiscoverUpdate = useSearchRedirectUpdate();
+  const [redirectToSearch, setRedirectToSearch] = useState(false);
   const classes = useStyles();
-
+  const [user, setUser] = useState(null);
+  // const { searchString, setSearchString } = useContext();
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaa", redirectToDiscover);
   const requestToken = async () => {
-    // const token = await axios.get("http://localhost:5000/getToken");
-    // console.log(token);
-    // window.open(`https://www.themoviedb.org/authenticate/${token}`);
-    window.open(
-      "https://www.themoviedb.org",
-      "_blank",
-      "top=100,left=500,width=800,height=600"
-    );
+    const token = await axios.get("http://localhost:5000/getToken");
+    console.log(token);
+    window.open(`https://www.themoviedb.org/authenticate/${token.data}`);
+    // window.open(
+    //   "https://www.themoviedb.org",
+    //   "_blank",
+    //   "top=100,left=500,width=800,height=600"
+    // );
   };
-
-  useEffect(() => {
-    setShowMoviesMode(genre);
-  }, [genre]);
-  useEffect(() => {
-    setShowMoviesMode(sortBy);
-  }, [sortBy]);
+  console.log("hehehe", redirectToSearch);
   return (
-    <div>
-      <AppBar position="sticky">
+    <AppBar position="sticky" style={{ boxShadow: "none" }}>
+      <Container>
+        {console.log("THE VALUE", redirectToDiscover)}
+        {redirectToSearch && (
+          <Redirect
+            to={{
+              pathname: `/discover/${searchString}`,
+              searchString: searchString,
+            }}
+          >
+            {console.log("hehehehefasffsafasfsafasfasfasfasf")}
+          </Redirect>
+        )}
+
         <Toolbar className={classes.root}>
-          <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-            <Typography variant="h4" className={classes.logo}>
+          <Link
+            to="/"
+            style={{ color: "white", textDecoration: "none" }}
+            onClick={() => {
+              setRedirectToSearch(false);
+            }}
+          >
+            <Typography variant="h3" className={classes.logo}>
               ZMDBi
             </Typography>
           </Link>
-          <Link to="/discover" style={{ textDecoration: "none" }}>
-            <Button variant="contained">DISCOVER</Button>
-          </Link>
-          <form
-            style={{ display: "flex" }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (showMoviesMode === "search") {
-                setShowMoviesMode("searcho");
-              } else {
-                setShowMoviesMode("search");
-              }
-            }}
-          >
-            <div style={{ width: "500px" }}>
-              <TextField
-                style={{ alignSelf: "flex-end", width: "100%" }}
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              ></TextField>
-            </div>
-            <Button style={{ alignSelf: "flex-end" }} type="submit">
-              Search
-            </Button>
-          </form>
+
+          <div>
+            <form
+              style={{ display: "flex" }}
+              onSubmit={(e) => {
+                if (searchString !== "") {
+                  setRedirectToSearch(true);
+                  localStorage.setItem("searchString", searchString);
+                }
+                setSearchString("");
+                console.log("SPUSTEN");
+                redirectToDiscoverUpdate(!redirectToDiscover);
+                e.preventDefault();
+              }}
+            >
+              {" "}
+              {/* <Link to="/discover" style={{ textDecoration: "none" }}>
+                  <Button variant="contained">DISCOVER</Button>
+                </Link> */}
+              <div style={{ width: "500px" }}>
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  style={{
+                    alignSelf: "flex-end",
+                    width: "100%",
+                    backgroundColor: "white",
+                    borderRadius: "5px",
+                  }}
+                  value={searchString}
+                  onChange={(e) => {
+                    console.log("SEARCH STRING", searchString);
+                    setSearchString(e.target.value);
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                ></TextField>
+              </div>
+              <Button style={{ alignSelf: "center" }} type="submit">
+                Search
+              </Button>
+            </form>
+          </div>
           <Button
             className={classes.btn}
             onClick={() => requestToken()}
@@ -108,7 +144,7 @@ const NavBar = () => {
           </Button>
         </Toolbar>
         <Container maxWidth="false" className={classes.belowAppBar}>
-          <FormControl>
+          {/* <FormControl>
             <Typography variant="body2">Genre</Typography>
             <NativeSelect
               value={genre}
@@ -146,10 +182,10 @@ const NavBar = () => {
               <option value="review_score">Review Score</option>
               <option value="release_date">Release Date</option>
             </NativeSelect>
-          </FormControl>
+          </FormControl> */}
         </Container>
-      </AppBar>
-    </div>
+      </Container>
+    </AppBar>
   );
 };
 

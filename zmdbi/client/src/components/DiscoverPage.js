@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Context } from "../contexts/Context";
+// import { Context } from "../contexts/Context";
 import axios from "axios";
 import MovieCard from "./MovieCard";
 import "../index.css";
@@ -11,7 +11,12 @@ import {
   Link,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-
+import {
+  useSearchRedirectUpdate,
+  useSearchRedirect,
+  useSearchUpdate,
+  useSearch,
+} from "../contexts/SearchContext";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 const useStyles = makeStyles({
@@ -24,68 +29,36 @@ const useStyles = makeStyles({
 });
 
 const MainPage = () => {
+  const redirectSearchUpdate = useSearchRedirectUpdate();
+  const redirectToDiscover = useSearchRedirect();
   const [currentPage, setCurrentPage] = useState(1);
-  const [posts, setPosts] = useState("");
+  const [posts, setPosts] = useState(null);
   const [postsLoaded, setPostsLoaded] = useState(false);
-  const { showMoviesMode, search } = useContext(Context);
-  console.log(showMoviesMode);
+
+  const [noMoviesFound, setNoMoviesFound] = useState(false);
   const classes = useStyles();
 
   async function fetchMovies() {
-    if (showMoviesMode === "popularity" || showMoviesMode === "none") {
-      try {
-        const data = await axios.get("http://localhost:5000/movies", {
-          params: { page: currentPage },
-        });
-        console.log("loaded");
-        setPosts(data.data);
-        setPostsLoaded(true);
-      } catch (err) {
-        console.error(err);
-      }
-    } else if (showMoviesMode === "search" || showMoviesMode === "searcho") {
-      try {
-        const data = await axios.get("http://localhost:5000/movies/search", {
-          params: { page: currentPage, searchString: search },
-        });
-        setPosts(data.data);
-        setPostsLoaded(true);
-      } catch (err) {
-        console.error(err);
-      }
-    } else if (showMoviesMode === "action") {
-      try {
-        const data = await axios.get(
-          "http://localhost:5000/filterGenre/action"
-        );
-        setPosts(data.data);
-        setPostsLoaded(true);
-      } catch (err) {
-        console.error(err);
-      }
-    } else if (showMoviesMode === "horror") {
-      try {
-        const data = await axios.get(
-          "http://localhost:5000/filterGenre/horror",
-          {
-            params: { page: currentPage },
-          }
-        );
-        setPosts(data.data);
-        setPostsLoaded(true);
-      } catch (err) {
-        console.error(err);
-      }
+    try {
+      const data = await axios.get("http://localhost:5000/movies/search", {
+        params: {
+          page: currentPage,
+          searchString: localStorage.getItem("searchString"),
+        },
+      });
+      console.log(data.data);
+      setPosts(data.data);
+      setPostsLoaded(true);
+    } catch (err) {
+      console.error(err);
     }
   }
-  const navNums = [];
-  for (let i = currentPage; i < currentPage + 6; i++) {
-    navNums.push(i);
-  }
-
+  console.log("rwaraw", localStorage.getItem("searchString"));
+  console.log(posts);
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaa", redirectToDiscover);
   useEffect(() => {
     fetchMovies();
-  }, [currentPage, showMoviesMode]);
+  }, [redirectToDiscover]);
 
   return (
     <>
@@ -107,20 +80,7 @@ const MainPage = () => {
             justify="center"
             spacing={5}
             className={classes.navNums}
-          >
-            <IconButton
-              onClick={() => {
-                if (currentPage > 1) {
-                  setCurrentPage(currentPage - 1);
-                }
-              }}
-            >
-              <NavigateBeforeIcon fontSize="large" color="primary" />
-            </IconButton>
-            <IconButton onClick={() => setCurrentPage(currentPage + 1)}>
-              <NavigateNextIcon fontSize="large" color="primary" />
-            </IconButton>
-          </Grid>
+          ></Grid>
         </Container>
       ) : (
         <div className="spinner"></div>

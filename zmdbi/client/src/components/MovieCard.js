@@ -19,10 +19,13 @@ import RatingWheel from "./RatingWheel";
 const MovieCard = ({ movie, imgWidth, imgHeight }) => {
   let borderRadius;
   let height;
+  let shadow;
   if (imgWidth === "200") {
     borderRadius = 0;
     height = 365;
+    shadow = "5px 5px 18px #DAD7D7";
   } else {
+    shadow = "none";
     borderRadius = 5;
     height = "auto";
   }
@@ -34,7 +37,7 @@ const MovieCard = ({ movie, imgWidth, imgHeight }) => {
       justifySelf: "center",
       margin: "15px",
       position: "relative",
-      boxShadow: "none",
+      boxShadow: `${shadow}`,
       padding: 0,
     },
     cardMedia: {
@@ -76,9 +79,8 @@ const MovieCard = ({ movie, imgWidth, imgHeight }) => {
               aria-label="vertical outlined primary button group"
             >
               <Button>Watchlist</Button>
-              <Button>Rate</Button>
               <Button>Favorite</Button>
-              <Button>Add To List</Button>
+              <Button>Rate</Button>
             </ButtonGroup>
           )}
         </IconButton>
@@ -102,6 +104,7 @@ const MovieCard = ({ movie, imgWidth, imgHeight }) => {
           style={{ textDecoration: "none" }}
         >
           <Typography
+            className="hoverLink"
             variant="body2"
             color="textPrimary"
             component="p"
@@ -119,7 +122,7 @@ const MovieCard = ({ movie, imgWidth, imgHeight }) => {
           component="p"
           style={{ verticalAlign: "text-bottom" }}
         >
-          {movie.release_date.slice(0, 4)}
+          {movie.release_date && movie.release_date.slice(0, 4)}
         </Typography>
       </CardContent>
     </Card>

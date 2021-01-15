@@ -94,4 +94,29 @@ router.get("/actor/credits/all", async (req, res) => {
     res.json(err.message);
   }
 });
+router.get("/movie/keywords", async (req, res) => {
+  try {
+    const keywords = await axios.get(
+      `
+      https://api.themoviedb.org/3/movie/${req.query.id}/keywords?api_key=${process.env.API_ENV}`
+    );
+    console.log("keywords", keywords.data);
+    res.json(keywords.data.keywords);
+  } catch (err) {
+    console.log("ERROR");
+    res.json(err.message);
+  }
+});
+router.get("/movie/recommendations", async (req, res) => {
+  try {
+    const recommendations = await axios.get(
+      `https://api.themoviedb.org/3/movie/${req.query.id}/recommendations?api_key=${process.env.API_ENV}&language=en-US&page=1`
+    );
+
+    res.json(recommendations.data);
+  } catch (err) {
+    console.log("ERROR");
+    res.json(err.message);
+  }
+});
 module.exports = router;
