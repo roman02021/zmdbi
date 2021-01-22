@@ -3,6 +3,7 @@ import { Typography, Paper, Button } from "@material-ui/core";
 import { useParams, useRouteMatch, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import NoProfilePic from "../../images/profile_pic_holder_smaller.png";
 const useStyles = makeStyles({
   actorImage: {
     borderRadius: "5px 5px 0 0",
@@ -66,9 +67,10 @@ const TopBilledCast = ({ topBilledCast, movieDetails, credits }) => {
               }}
             >
               <img
+                alt={actor.name}
                 style={{ width: "138px", height: "175px" }}
                 className={classes.actorImage}
-                src={`https://it.fitnyc.edu/wp-content/uploads/2018/01/Untitled-design.png`}
+                src={NoProfilePic}
               ></img>
             </Link>
           )}

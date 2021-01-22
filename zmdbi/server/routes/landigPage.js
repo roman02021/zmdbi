@@ -39,7 +39,7 @@ router.get("/top_rated", async (req, res) => {
     const topRated = await axios.get(
       `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_ENV}&language=en-US&page=1`
     );
-    console.log(topRated);
+
     res.json(topRated.data);
   } catch (err) {
     res.json(err);
@@ -91,6 +91,17 @@ router.get("/upcoming", async (req, res) => {
       `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.API_ENV}&language=en-US&page=1`
     );
     res.json(upcoming.data);
+  } catch (err) {
+    res.json(err);
+  }
+});
+router.get("/trendingPeople", async (req, res) => {
+  try {
+    const trendingPeople = await axios.get(
+      `https://api.themoviedb.org/3/trending/person/day?api_key=${process.env.API_ENV}`
+    );
+
+    res.json(trendingPeople.data);
   } catch (err) {
     res.json(err);
   }

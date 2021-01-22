@@ -1,58 +1,49 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Typography, Button } from "@material-ui/core";
-import {
-  Context,
-  useSearchRedirectUpdate,
-  useSearchRedirect,
-} from "../../contexts/SearchContext";
-import SearchContext from "../../contexts/SearchContext";
-import { Redirect } from "react-router-dom";
-const SideInfo = ({ movieId, movieDetails }) => {
-  const redirectToDiscover = useSearchRedirect();
+import { useSearchRedirectUpdate } from "../../contexts/SearchContext";
+import { Link } from "react-router-dom";
+
+const SideInfo = ({ movieId, movieDetails, mediaType }) => {
   const redirectToDiscoverUpdate = useSearchRedirectUpdate();
   const [keywords, setKeywords] = useState(null);
-  const [recommedations, setRecommendations] = useState(null);
+
   const [loaded, setLoaded] = useState(false);
-
-  const [keyword, setKeyword] = useState("");
-
+  console.log("hehe", keywords);
   const fetchData = async () => {
-    const keywords = await axios.get(
-      "http://localhost:5000/details/movie/keywords",
-      {
-        params: { id: movieId },
+    try {
+      const keywords = await axios.get(
+        `http://localhost:5000/details/${mediaType}/keywords`,
+        {
+          params: { id: movieId },
+        }
+      );
+      if (keywords.data.results) {
+        setKeywords(keywords.data.results);
+      } else {
+        setKeywords(keywords.data.keywords);
       }
-    );
 
-    setKeywords(keywords.data);
-    setLoaded(true);
+      setLoaded(true);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  console.log("KEYWORDS", keywords);
   useEffect(() => {
     fetchData();
   }, []);
   return (
     loaded && (
       <div style={{ marginLeft: "30px" }}>
-        {redirectToDiscover && (
-          <Redirect
-            to={{
-              pathname: `/discover/${keyword}`,
-              searchString: keyword,
-              state: { hello: "hello" },
-            }}
-          ></Redirect>
-        )}
         <Typography variant="h6">Status</Typography>
-        {movieDetails.status != "" ? (
+        {movieDetails.status !== "" ? (
           <Typography>{movieDetails.status}</Typography>
         ) : (
           "-"
         )}
         <Typography variant="h6">Original Language</Typography>
-        {movieDetails.original_language != "" ? (
+        {movieDetails.original_language !== "" ? (
           <Typography>{movieDetails.original_language}</Typography>
         ) : (
           "-"
@@ -75,35 +66,45 @@ const SideInfo = ({ movieId, movieDetails }) => {
         {movieDetails.revenue ? (
           movieDetails.revenue > 1000 ? (
             movieDetails.revenue > 1000000 ? (
-              <Typography>{movieDetails.revenue / 1000000} million</Typography>
+              <Typography>
+                {Number(movieDetails.revenue / 1000000).toFixed(2)} million
+              </Typography>
             ) : (
-              <Typography>{movieDetails.revenue / 1000} thousand</Typography>
+              <Typography>
+                {Number(movieDetails.revenue / 1000).toFixed(2)} thousand
+              </Typography>
             )
           ) : (
-            <Typography>{movieDetails.revenue}</Typography>
+            <Typography>{Number(movieDetails.revenue).toFixed(2)}</Typography>
           )
         ) : (
           "-"
         )}
+
         <Typography variant="h6" style={{ margin: "10px 0 10px 0" }}>
           Keywords
         </Typography>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {console.log(keywords)}
-          {keywords &&
+          {keywords ? (
             keywords.map((keyword) => (
-              <Button
-                onClick={(e) => {
-                  redirectToDiscoverUpdate(true);
-                  setKeyword(keyword.name);
-                  localStorage.setItem("searchString", keyword.name);
-                }}
-                variant="outlined"
-                style={{ margin: "5px", padding: "4px" }}
+              <Link
+                to={`/discover/${keyword.name}`}
+                style={{ textDecoration: "none" }}
               >
-                {keyword.name}
-              </Button>
-            ))}
+                <Button
+                  onClick={(e) => {
+                    localStorage.setItem("searchString", keyword.name);
+                  }}
+                  variant="outlined"
+                  style={{ margin: "5px", padding: "4px" }}
+                >
+                  {keyword.name}
+                </Button>
+              </Link>
+            ))
+          ) : (
+            <Typography>No keywords have been added.</Typography>
+          )}
         </div>
       </div>
     )

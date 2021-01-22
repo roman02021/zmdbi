@@ -2,6 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Typography, Paper } from "@material-ui/core";
 import image_holder from "../../images/no_image_holder.png";
+import { Link } from "react-router-dom";
+import "../../linkStyle.scss";
 const useStyles = makeStyles({
   actorImage: {
     borderRadius: "5px 5px 0 0",
@@ -40,7 +42,8 @@ const useStyles = makeStyles({
   },
 });
 
-const TopMovie = ({ movieDetails, director }) => {
+const TopMovie = ({ movieDetails, director, writer }) => {
+  console.log("WRITOR", writer);
   const classes = useStyles();
   console.log(movieDetails);
   return (
@@ -90,9 +93,10 @@ const TopMovie = ({ movieDetails, director }) => {
           }}
         >
           <Typography variant="h5" className={classes.textStyle}>
-            {movieDetails.original_title && movieDetails.original_title}
+            {movieDetails.title && movieDetails.title}
+            {movieDetails.name && movieDetails.name}
             {movieDetails.release_date &&
-              "(" + movieDetails.release_date.slice(0, 4) + ")"}
+              " (" + movieDetails.release_date.slice(0, 4) + ")"}
           </Typography>
 
           <Typography
@@ -132,8 +136,24 @@ const TopMovie = ({ movieDetails, director }) => {
           <div>
             {director && (
               <div className={classes.textStyle}>
-                <Typography>Director</Typography>
-                <Typography>{director}</Typography>
+                <Typography variant="h6">Director</Typography>
+                <Link
+                  to={`/actor/${director.id}/`}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <Typography className="linkStyle">{director.name}</Typography>
+                </Link>
+              </div>
+            )}
+            {writer && (
+              <div className={classes.textStyle}>
+                <Typography variant="h6">Writer</Typography>
+                <Link
+                  to={`/actor/${writer.id}/`}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <Typography className="linkStyle">{writer.name}</Typography>
+                </Link>
               </div>
             )}
           </div>

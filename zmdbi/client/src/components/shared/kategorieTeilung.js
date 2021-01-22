@@ -13,7 +13,7 @@ export function kategorieTeilung(credits) {
     writing: [],
   };
 
-  credits.crew.map((crew) => {
+  credits.map((crew) => {
     if (crew.department === "Production") {
       categories.production.push(crew);
     } else if (crew.department === "Art") {

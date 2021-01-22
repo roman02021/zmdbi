@@ -2,7 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const axios = require("axios");
-
+const cookieParser = require("cookie-parser");
 //Routes
 const movies = require("./routes/movies.js");
 const filterGenre = require("./routes/filterGenre");
@@ -21,7 +21,8 @@ app.listen(PORT, () => {
 });
 //Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("hello");

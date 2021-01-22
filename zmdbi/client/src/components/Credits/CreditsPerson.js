@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Paper, Typography } from "@material-ui/core";
-import "../linkStyle.scss";
-import profilePicHolder from "../images/profile_pic_holder2.png";
-export const CreditPerson = ({ credits }) => {
-  console.log(credits);
+import "../../linkStyle.scss";
+import profilePicHolder from "../../images/profile_pic_holder2.png";
+const CreditPerson = ({ credits }) => {
   return (
     <div style={{ display: "flex", margin: "20px 20px 20px 0" }}>
       <Link
@@ -38,10 +37,16 @@ export const CreditPerson = ({ credits }) => {
         >
           <Typography className="hoverLink"> {credits.name}</Typography>
         </Link>
-        <Typography variant="subtitle2">
-          {credits.character ? credits.character : credits.job}
-        </Typography>
+        {credits.character ? (
+          <Typography variant="subtitle2">
+            {credits.character ? credits.character : credits.job}
+          </Typography>
+        ) : (
+          credits.known_for_department
+        )}
       </Typography>
     </div>
   );
 };
+
+export default CreditPerson;

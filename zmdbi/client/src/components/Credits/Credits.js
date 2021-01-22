@@ -1,8 +1,8 @@
 import React from "react";
 import { useHistory, Link } from "react-router-dom";
-import { CreditPerson } from "./CreditsPerson";
+import CreditPerson from "./CreditsPerson";
 import { Container, Typography } from "@material-ui/core";
-import { kategorieTeilung } from "./kategorieTeilung";
+import { kategorieTeilung } from "../shared/kategorieTeilung";
 import { makeStyles } from "@material-ui/styles";
 
 const Credits = () => {
@@ -11,7 +11,7 @@ const Credits = () => {
 
   //crew categories
 
-  const categories = kategorieTeilung(credits);
+  const categories = kategorieTeilung(credits.crew);
 
   return (
     <Container

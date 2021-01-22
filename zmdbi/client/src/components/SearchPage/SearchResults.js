@@ -1,5 +1,5 @@
 import React from "react";
 
-export const Searcher = () => {
+export const SearchResults = () => {
   return <div></div>;
 };

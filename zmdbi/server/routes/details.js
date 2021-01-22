@@ -3,20 +3,33 @@ const axios = require("axios");
 const e = require("express");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/movie", async (req, res) => {
   try {
     const details = await axios.get(
       `
       https://api.themoviedb.org/3/movie/${req.query.id}?api_key=${process.env.API_ENV}&language=en-US`
     );
-    console.log("succes review");
+
     res.json(details.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
   }
 });
-router.get("/reviews", async (req, res) => {
+router.get("/tv", async (req, res) => {
+  try {
+    const details = await axios.get(
+      `
+      https://api.themoviedb.org/3/tv/${req.query.id}?api_key=${process.env.API_ENV}&language=en-US`
+    );
+
+    res.json(details.data);
+  } catch (err) {
+    console.log("ERROR");
+    res.status(404).json(err);
+  }
+});
+router.get("/reviews/movie", async (req, res) => {
   try {
     const review = await axios.get(
       `
@@ -26,10 +39,23 @@ router.get("/reviews", async (req, res) => {
     res.json(review.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
   }
 });
-router.get("/credits", async (req, res) => {
+router.get("/reviews/tv", async (req, res) => {
+  try {
+    const review = await axios.get(
+      `
+        https://api.themoviedb.org/3/tv/${req.query.id}/reviews?api_key=${process.env.API_ENV}&language=en-US`
+    );
+
+    res.json(review.data);
+  } catch (err) {
+    console.log("ERROR");
+    res.status(404).json(err);
+  }
+});
+router.get("/credits/movie", async (req, res) => {
   try {
     const credits = await axios.get(
       `
@@ -39,7 +65,20 @@ router.get("/credits", async (req, res) => {
     res.json(credits.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
+  }
+});
+router.get("/credits/tv", async (req, res) => {
+  try {
+    const credits = await axios.get(
+      `
+      https://api.themoviedb.org/3/tv/${req.query.id}/credits?api_key=${process.env.API_ENV}&language=en-US`
+    );
+
+    res.json(credits.data);
+  } catch (err) {
+    console.log("ERROR");
+    res.status(404).json(err);
   }
 });
 router.get("/actor", async (req, res) => {
@@ -55,7 +94,7 @@ router.get("/actor", async (req, res) => {
     res.json(actorDetails.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
   }
 });
 router.get("/actor/credits/movies", async (req, res) => {
@@ -67,7 +106,7 @@ router.get("/actor/credits/movies", async (req, res) => {
     res.json(movieCredits.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
   }
 });
 router.get("/actor/credits/tv", async (req, res) => {
@@ -79,7 +118,7 @@ router.get("/actor/credits/tv", async (req, res) => {
     res.json(tvCredits.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
   }
 });
 router.get("/actor/credits/all", async (req, res) => {
@@ -91,7 +130,7 @@ router.get("/actor/credits/all", async (req, res) => {
     res.json(tvCredits.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
   }
 });
 router.get("/movie/keywords", async (req, res) => {
@@ -100,11 +139,24 @@ router.get("/movie/keywords", async (req, res) => {
       `
       https://api.themoviedb.org/3/movie/${req.query.id}/keywords?api_key=${process.env.API_ENV}`
     );
-    console.log("keywords", keywords.data);
-    res.json(keywords.data.keywords);
+
+    res.json(keywords.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
+  }
+});
+router.get("/tv/keywords", async (req, res) => {
+  try {
+    const keywords = await axios.get(
+      `
+      https://api.themoviedb.org/3/tv/${req.query.id}/keywords?api_key=${process.env.API_ENV}`
+    );
+
+    res.json(keywords.data);
+  } catch (err) {
+    console.log("ERROR");
+    res.status(404).json(err);
   }
 });
 router.get("/movie/recommendations", async (req, res) => {
@@ -116,7 +168,7 @@ router.get("/movie/recommendations", async (req, res) => {
     res.json(recommendations.data);
   } catch (err) {
     console.log("ERROR");
-    res.json(err.message);
+    res.status(404).json(err);
   }
 });
 module.exports = router;
