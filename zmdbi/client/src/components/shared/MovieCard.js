@@ -117,9 +117,9 @@ const MovieCard = ({ movie, imgWidth, imgHeight, mediaType }) => {
           disableRipple
           onClick={() => setDropDown(true)}
           style={{
-            backgroundColor: "white",
+            backgroundColor: "rgba(255, 255, 255, 0.3)",
             position: "absolute",
-            right: "3px",
+            right: "5px",
             padding: "0px",
             top: "5px",
           }}

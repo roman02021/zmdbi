@@ -10,6 +10,7 @@ const sortBy = require("./routes/sortBy");
 const details = require("./routes/details");
 const getToken = require("./routes/getToken");
 const landingPage = require("./routes/landigPage");
+const search = require("./routes/search");
 require("dotenv").config();
 const cors = require("cors");
 
@@ -34,3 +35,4 @@ app.use("/sortBy", sortBy);
 app.use("/details", details);
 app.use("/getToken", getToken);
 app.use("/landingPage", landingPage);
+app.use("/search", search);

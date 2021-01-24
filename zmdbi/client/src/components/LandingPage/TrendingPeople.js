@@ -39,18 +39,21 @@ const TrendingPerson = (props) => {
             <Paper style={{ display: "flex", margin: "10px" }}>
               <Link
                 to={`/actor/${person.id}/`}
-                style={{ textDecoration: "none", color: "black" }}
+                style={{
+                  textDecoration: "none",
+                  color: "black",
+                  height: "112px",
+                }}
               >
                 <img
                   style={{
                     width: "88px",
                     borderRadius: "5px 0 0 5px",
-                    margin: "5px 10px 0px 5px",
                   }}
                   src={`https://www.themoviedb.org/t/p/w138_and_h175_face/${person.profile_path}`}
                 />{" "}
               </Link>{" "}
-              <div>
+              <div style={{ marginLeft: "10px" }}>
                 <Link
                   to={`/actor/${person.id}/`}
                   style={{ textDecoration: "none", color: "black" }}
@@ -59,7 +62,9 @@ const TrendingPerson = (props) => {
                     {person.name}
                   </Typography>{" "}
                 </Link>{" "}
-                <Typography variant="caption">Known For</Typography>
+                <Typography variant="caption" style={{ fontWeight: "700" }}>
+                  Known For
+                </Typography>
                 {person.known_for.map((movie) => (
                   <div>
                     <Link

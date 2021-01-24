@@ -1,0 +1,14 @@
+.hoverStyle {
+  &:hover {
+    background-color: #ebebeb;
+  }
+}
+.hoverStyle:hover .results {
+  background-color: #ffffff;
+}
+.hoverStyleTitle:hover {
+  color: #7b7777 !important;
+}
+.searchPic {
+  border-radius: 5px 0 0 5px;
+}

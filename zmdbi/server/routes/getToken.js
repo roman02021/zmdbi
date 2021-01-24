@@ -49,7 +49,7 @@ router.get("/getAccDetails", async (req, res) => {
 
     res.json(accDetails.data);
   } catch (err) {
-    console.log("ERROeR");
+    console.log("Not Signed In");
     res.json(err.message);
   }
 });

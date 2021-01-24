@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 // import { Context } from "../contexts/Context";
-
+import { makeStyles } from "@material-ui/styles";
 import { useDiscover, useDiscoverUpdate } from "../../contexts/DiscoverContext";
-
+import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import MovieCard from "../shared/MovieCard";
 import "../../index.css";
 import { Grid, Container, Button } from "@material-ui/core";
 
 import Searcher from "./Searcher";
-import { makeStyles } from "@material-ui/styles";
-import {
-  useSearchRedirectUpdate,
-  useSearchRedirect,
-} from "../../contexts/SearchContext";
 
 const useStyles = makeStyles({
   navNums: {
@@ -26,7 +21,10 @@ const useStyles = makeStyles({
 
 const loadMore = () => {};
 const MainPage = () => {
-  const redirectToDiscover = useSearchRedirect();
+  const location = useLocation();
+  const history = useHistory();
+  console.log("heheeh", location);
+  console.log("HEHAAAAAAAAAAAAAa", history);
 
   const posts = useDiscover();
   const setPosts = useDiscoverUpdate();
@@ -35,7 +33,7 @@ const MainPage = () => {
 
   const classes = useStyles();
   const date = new Date();
-  const [sortOption, setSortOption] = useState("popularity.desc");
+  const [sortOption, setSortOption] = useState(location.state.sortOption);
   const [page, setPage] = useState(1);
   const [releaseDateMin, setReleaseDateMin] = useState("1870-01-01");
   const [releaseDateMax, setReleaseDateMax] = useState(
@@ -49,11 +47,11 @@ const MainPage = () => {
   const [totalResults, setTotalResults] = useState(0);
   const [language, setLanguage] = useState("en");
 
-  const [mediaType, setMediaType] = useState(0);
+  const [mediaType, setMediaType] = useState(location.state.mediaType);
 
   const submitHandle = async () => {
-    console.log("hehe", mediaType);
-    if (mediaType === false) {
+    console.log(mediaType);
+    if (mediaType == false) {
       const discoverResults = await axios.get(
         "http://localhost:5000/movies/movie/discover",
         {
@@ -76,6 +74,7 @@ const MainPage = () => {
       setTotalResults(discoverResults.data.total_results);
       setTotalPages(discoverResults.data.total_pages);
       setPosts(discoverResults.data.results);
+      setPostsLoaded(true);
     } else {
       const discoverResults = await axios.get(
         "http://localhost:5000/movies/tv/discover",
@@ -99,18 +98,18 @@ const MainPage = () => {
       setTotalResults(discoverResults.data.total_results);
       setTotalPages(discoverResults.data.total_pages);
       setPosts(discoverResults.data.results);
+      setPostsLoaded(true);
     }
   };
 
   const loadMore = async () => {
     if (page + 1 > totalPages) {
-      console.log("Not More Pages");
     } else {
       setPage(page + 1);
 
-      if (mediaType === false) {
+      if (mediaType == false) {
         const discoverResults = await axios.get(
-          "http://localhost:5000/movies/discover",
+          "http://localhost:5000/movies/movie/discover",
           {
             params: {
               sortOption,
@@ -149,33 +148,22 @@ const MainPage = () => {
       }
     }
   };
-  console.log("POSTS", posts);
-  async function fetchMovies() {
-    try {
-      const data = await axios.get("http://localhost:5000/movies/search", {
-        params: {
-          page: 1,
-          searchString: localStorage.getItem("searchString"),
-        },
-      });
-      console.log(data.data);
-      setPosts(data.data);
-      setPostsLoaded(true);
-    } catch (err) {
-      console.error(err);
-    }
-  }
 
   useEffect(() => {
-    fetchMovies();
-  }, [redirectToDiscover]);
-  console.log("POSTS", posts);
+    submitHandle();
+  }, [sortOption]);
+  useEffect(() => {
+    setSortOption(location.state.sortOption);
+    setMediaType(location.state.mediaType);
+  }, [location.state.sortOption, location.state.mediaType]);
+  console.log("LOCAJJTWAKTAWIKT", location.state);
   return (
     <>
       {postsLoaded ? (
         <Container>
           <div style={{ display: "flex", marginTop: "20px" }}>
             <Searcher
+              defaultSortMode={location.state.sortOption}
               releaseDateMax={releaseDateMax}
               setRuntime={setRuntime}
               runtime={runtime}

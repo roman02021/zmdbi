@@ -9,10 +9,10 @@ router.get("/movie", async (req, res) => {
       `
       https://api.themoviedb.org/3/movie/${req.query.id}?api_key=${process.env.API_ENV}&language=en-US`
     );
-
+    console.log("ehehe");
     res.json(details.data);
   } catch (err) {
-    console.log("ERROR");
+    console.log("ERRrrwrOR");
     res.status(404).json(err);
   }
 });

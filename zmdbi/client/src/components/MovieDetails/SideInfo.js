@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Typography, Button } from "@material-ui/core";
-import { useSearchRedirectUpdate } from "../../contexts/SearchContext";
+
 import { Link } from "react-router-dom";
 
 const SideInfo = ({ movieId, movieDetails, mediaType }) => {
-  const redirectToDiscoverUpdate = useSearchRedirectUpdate();
   const [keywords, setKeywords] = useState(null);
 
   const [loaded, setLoaded] = useState(false);
@@ -88,7 +87,10 @@ const SideInfo = ({ movieId, movieDetails, mediaType }) => {
           {keywords ? (
             keywords.map((keyword) => (
               <Link
-                to={`/discover/${keyword.name}`}
+                to={{
+                  pathname: `/search/${keyword.name}`,
+                  state: keyword.name,
+                }}
                 style={{ textDecoration: "none" }}
               >
                 <Button

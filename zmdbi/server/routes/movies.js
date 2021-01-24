@@ -1,7 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const router = express.Router();
-const session = require("express-session");
+
 router.get("/", async (req, res) => {
   try {
     const movie = await axios.get(
@@ -45,7 +45,7 @@ router.get("/tv/discover", async (req, res) => {
     const discover = await axios.get(
       `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.API_ENV}&language=en-US&sort_by=${req.query.sortOption}&include_adult=false&include_video=false&page=${req.query.page}&release_date.gte=${req.query.releaseDateMin}&release_date.lte=${req.query.releaseDateMax}&vote_average.gte=${req.query.scoreMin}&vote_average.lte${req.query.scoreMax}&with_genres=${req.query.genres}&with_runtime.gte=${req.query.runtimeMin}&with_runtime.lte=${req.query.runtimeMax}&with_original_language=${req.query.language}`
     );
-
+    console.log(discover.data);
     res.json(discover.data);
   } catch (err) {
     console.log("ERRhheOR");

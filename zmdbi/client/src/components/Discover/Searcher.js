@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDiscoverUpdate, useDiscover } from "../../contexts/DiscoverContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -28,9 +28,13 @@ const Searcher = ({
   setLanguage,
   mediaType,
   setMediaType,
+  defaultSortMode,
 }) => {
   const setPosts = useDiscoverUpdate();
   const posts = useDiscover();
+
+  const sortOption = useRef(null);
+  console.log("REFAFFFA", sortOption);
 
   const date = new Date();
 
@@ -53,6 +57,14 @@ const Searcher = ({
     setScore(newValue);
     console.log(score);
   };
+  useEffect(() => {
+    console.log(defaultSortMode);
+    console.log(sortOption.current);
+    Array.from(sortOption.current.childNodes)
+      .find((element) => element.value === defaultSortMode)
+      .setAttribute("selected", "");
+  }, []);
+
   console.log(releaseDateMin);
   return (
     <div>
@@ -69,6 +81,7 @@ const Searcher = ({
             name="sort"
             id="sortOptions"
             onChange={(e) => setSortOption(e.target.value)}
+            ref={sortOption}
           >
             <option value="popularity.desc">Popularity Descending</option>
             <option value="popularity.asc">Popularity Ascending</option>
@@ -86,6 +99,8 @@ const Searcher = ({
             </option>
             <option value="popularity.desc">Popularity Descending</option>
             <option value="popularity.asc">Popularity Date Ascending</option>
+            <option value="vote_count.desc">Vote Count Descending</option>
+            <option value="vote_count.asc">Vote Count Ascending</option>
           </select>
         </div>
         <p>Filters</p>
