@@ -1,14 +1,13 @@
 import React from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import CreditPerson from "./CreditsPerson";
 import { Container, Typography } from "@material-ui/core";
 import { kategorieTeilung } from "../shared/kategorieTeilung";
-import { makeStyles } from "@material-ui/styles";
-
+import { useMediaQuery } from "@material-ui/core";
 const Credits = () => {
   let history = useHistory();
   const credits = history.location.state.credits;
-
+  const isMobile = useMediaQuery("(max-width:800px)");
   //crew categories
 
   const categories = kategorieTeilung(credits.crew);
@@ -19,15 +18,16 @@ const Credits = () => {
         display: "flex",
         justifyContent: "flex-start",
         marginTop: "30px",
+        flexDirection: isMobile ? "column" : "row",
       }}
     >
-      <div style={{ width: "50%" }}>
+      <div style={{ width: isMobile ? "100%" : "50%" }}>
         <Typography variant="h6">Actors</Typography>
         {credits.cast.map((actor) => (
           <CreditPerson credits={actor} />
         ))}
       </div>
-      <div style={{ width: "50%" }}>
+      <div style={{ width: isMobile ? "100%" : "50%" }}>
         {categories.art.length !== 0 && (
           <Typography variant="h6">Art</Typography>
         )}

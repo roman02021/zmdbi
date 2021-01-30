@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Paper, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import "../../linkStyle.scss";
 import profilePicHolder from "../../images/profile_pic_holder2.png";
 const CreditPerson = ({ credits }) => {
@@ -13,16 +13,18 @@ const CreditPerson = ({ credits }) => {
           display: "flex",
         }}
         to={{
-          pathname: `/actor/${credits.id}`,
+          pathname: `/person/${credits.id}`,
         }}
       >
         {credits.profile_path ? (
           <img
+            alt={credits.name}
             style={{ borderRadius: "5px" }}
             src={`https://www.themoviedb.org/t/p/w66_and_h66_face/${credits.profile_path}`}
           ></img>
         ) : (
           <img
+            alt={credits.name}
             style={{ width: "66px", height: "66px", borderRadius: "5px" }}
             src={profilePicHolder}
           ></img>
@@ -32,17 +34,22 @@ const CreditPerson = ({ credits }) => {
         <Link
           style={{ textDecoration: "none", color: "black" }}
           to={{
-            pathname: `/actor/${credits.id}`,
+            pathname: `/person/${credits.id}`,
           }}
         >
-          <Typography className="hoverLink"> {credits.name}</Typography>
+          <Typography className="hoverLink" variant="subtitle2">
+            {" "}
+            {credits.name}
+          </Typography>
         </Link>
         {credits.character ? (
-          <Typography variant="subtitle2">
+          <Typography variant="caption">
             {credits.character ? credits.character : credits.job}
           </Typography>
         ) : (
-          credits.known_for_department
+          <Typography variant="caption">
+            {credits.known_for_department}
+          </Typography>
         )}
       </Typography>
     </div>

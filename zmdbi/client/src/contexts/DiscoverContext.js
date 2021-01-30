@@ -1,8 +1,8 @@
 import React from "react";
 import { createContext, useState, useContext } from "react";
 
-const DiscoverContext = React.createContext();
-const DiscoverContextUpdate = React.createContext();
+const DiscoverContext = createContext();
+const DiscoverContextUpdate = createContext();
 
 export function useDiscover() {
   return useContext(DiscoverContext);

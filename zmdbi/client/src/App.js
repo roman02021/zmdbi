@@ -3,32 +3,28 @@ import DiscoverPage from "./components/Discover/DiscoverPage";
 import NavBar from "./components/shared/NavBar";
 import MoviePage from "./components/MovieDetails/MoviePage";
 
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Credits from "./components/Credits/Credits";
 import ActorPage from "./components/ActorPage/ActorPage";
 import LandingPage from "./components/LandingPage/LandingPage";
-import { CssBaseline, createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core";
 import Footer from "./components/shared/Footer";
 import "./linkStyle.scss";
 
 import SessionProvider from "./contexts/SessionContext";
 import DiscoverProvider from "./contexts/DiscoverContext";
-import { blue, red } from "@material-ui/core/colors";
+
 import SignedProvider from "./contexts/SignedContext";
 import LoginApproved from "./LoginApproved";
 import SearchResults from "./components/SearchPage/SearchResults";
-const theme = createMuiTheme({
-  pallete: {
-    primary: red,
-  },
-});
+
+import theme from "./theme";
 
 function App() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
         <div className="App">
           <DiscoverProvider>
             <SignedProvider>
@@ -48,7 +44,7 @@ function App() {
                   <Route path="/credits/:movieId" component={Credits}>
                     <Credits />
                   </Route>
-                  <Route path="/actor/:actorId" component={ActorPage}>
+                  <Route path="/person/:personId" component={ActorPage}>
                     <ActorPage />
                   </Route>
                   <Route path="/logginApproved" component={LoginApproved}>

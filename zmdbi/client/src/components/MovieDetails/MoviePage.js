@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Review from "./Review";
-import { Container, Typography, Button, Grid } from "@material-ui/core";
-import { useRouteMatch, Link, useParams } from "react-router-dom";
+import { Container, Typography, Button, Grid, Box } from "@material-ui/core";
 
+import { Link, useParams } from "react-router-dom";
+import { useMediaQuery } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import "../../linkStyle.scss";
 import TopBilledCast from "./TopBilledCast";
 import TopMovie from "./TopMovie";
 import SideInfo from "./SideInfo";
-const useStyles = makeStyles({
+import "./styles.scss";
+const useStyles = makeStyles((theme) => ({
   backrop: {
     zIndex: 0,
     position: "absolute",
     height: "632px",
-
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
-
     filter: "brightness(25%)",
+    width: "100%",
+  },
+  backropMobile: {
+    zIndex: 0,
+    position: "absolute",
 
+    [theme.breakpoints.down("600")]: {
+      top: 48,
+    },
+    [theme.breakpoints.down("500")]: {
+      top: 56,
+    },
+    height: "320px",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    filter: "brightness(25%)",
     width: "100%",
   },
   maxWidthXl: {
@@ -29,44 +44,44 @@ const useStyles = makeStyles({
   container: {
     backgroundColor: "#FAFAFA",
   },
-});
-// DOPORUCENE FILMY + KEYWORDS NA PRAVEJ STRANE + DODATOCNE INFO K FILMU
+}));
+
 const MoviePage = () => {
   const classes = useStyles();
-
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const { media_type, id } = useParams();
-
+  console.log(media_type);
   const [movieDetails, setMovieDetails] = useState({});
   const [reviews, setReviews] = useState([]);
   const [credits, setCredits] = useState([]);
   const [topBilledCast, setTopBilledCast] = useState([]);
   const [director, setDirector] = useState("");
-  const [writer, setWriter] = useState(null);
+
   const [lodaded, setLoaded] = useState(false);
 
   async function fetchMovie() {
     try {
       const details = await axios.get(
-        `http://localhost:5000/details/${media_type}`,
+        `https://arcane-reef-43492.herokuapp.com/details/${media_type}`,
         {
           params: { id: id },
         }
       );
       const reviews = await axios.get(
-        `http://localhost:5000/details/reviews/${media_type}`,
+        `https://arcane-reef-43492.herokuapp.com/details/reviews/${media_type}`,
         {
           params: { id: id },
         }
       );
       const credits = await axios.get(
-        `http://localhost:5000/details/credits/${media_type}`,
+        `https://arcane-reef-43492.herokuapp.com/details/credits/${media_type}`,
         {
           params: { id: id },
         }
       );
 
       const topBilledCast = credits.data.cast
-        .sort((actor) => actor.popularity > actor.popularity)
+        .sort((actor1, actor2) => actor1.popularity > actor2.popularity)
         .slice(0, 10);
       setTopBilledCast(topBilledCast);
       const director = credits.data.crew.filter(
@@ -84,17 +99,20 @@ const MoviePage = () => {
       setLoaded(true);
     } catch (e) {
       try {
-        const details = await axios.get("http://localhost:5000/details/tv", {
-          params: { id: id },
-        });
+        const details = await axios.get(
+          "https://arcane-reef-43492.herokuapp.com/details/tv",
+          {
+            params: { id: id },
+          }
+        );
         const reviews = await axios.get(
-          "http://localhost:5000/details/reviews/tv",
+          "https://arcane-reef-43492.herokuapp.com/details/reviews/tv",
           {
             params: { id: id },
           }
         );
         const credits = await axios.get(
-          "http://localhost:5000/details/credits/tv",
+          "https://arcane-reef-43492.herokuapp.com/details/credits/tv",
           {
             params: { id: id },
           }
@@ -107,7 +125,7 @@ const MoviePage = () => {
         const director = credits.data.crew.filter(
           (crew) => crew.job === "Director"
         );
-        console.log("DRAWRWAR", director);
+
         if (director.length > 0) {
           setDirector(director[0]);
         }
@@ -134,29 +152,39 @@ const MoviePage = () => {
     <div>
       {movieDetails.backdrop_path ? (
         <div
-          className={classes.backrop}
+          className={isMobile ? classes.backropMobile : classes.backrop}
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${movieDetails.backdrop_path})`,
+            backgroundImage: isMobile
+              ? `url(https://image.tmdb.org/t/p/w780/${movieDetails.backdrop_path})`
+              : `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${movieDetails.backdrop_path})`,
           }}
         ></div>
       ) : (
         <div
-          className={classes.backrop}
+          className={isMobile ? classes.backropMobile : classes.backrop}
           style={{
             backgroundColor: "white",
-            width: "1920px",
+            width: isMobile ? "780px" : "1920px",
           }}
         ></div>
       )}
       <Container className={classes.container} maxWidth="lg">
         <TopMovie
+          mediaType={media_type}
           movieDetails={movieDetails}
           director={director}
-          writer={writer}
         />
+        {isMobile && (
+          <Box style={{ marginTop: "10px" }}>
+            <Typography variant="h5">Overview</Typography>
+            <Typography className={classes.textStyle} variant="body2">
+              {movieDetails.overview}
+            </Typography>
+          </Box>
+        )}
 
         <Typography
-          variant="h4"
+          variant="h5"
           style={{
             marginTop: "20px",
             marginBottom: "15px",
@@ -165,8 +193,8 @@ const MoviePage = () => {
           Top Billed Cast
         </Typography>
 
-        <Grid container lg={12}>
-          <Grid item xs={9}>
+        <Grid container>
+          <Grid item xs={12} sm={9}>
             <TopBilledCast
               movieDetails={movieDetails}
               topBilledCast={topBilledCast}
@@ -182,23 +210,41 @@ const MoviePage = () => {
                   },
                 }}
               >
-                <Button variant="contained">show cast</Button>
+                <Button>
+                  <Typography variant="h6">Show Cast</Typography>
+                </Button>
               </Link>
             </div>
-            <Typography variant="h6" style={{ marginTop: "20px" }}>
-              Reviews {reviews && reviews.length}
-            </Typography>
+            {reviews.length > 0 ? (
+              <Typography
+                variant="h6"
+                style={{ marginTop: "20px", marginLeft: "7px" }}
+              >
+                Reviews ({reviews.length})
+              </Typography>
+            ) : (
+              <Typography style={{ marginTop: "20px", marginLeft: "7px" }}>
+                No Reviews
+              </Typography>
+            )}
+
             {reviews &&
               reviews.map((review) => (
-                <Review reviews={review} movieDetails={movieDetails} />
+                <Review
+                  reviews={review}
+                  movieDetails={movieDetails}
+                  key={review.id}
+                />
               ))}
           </Grid>
-          <Grid item xs={3}>
-            <SideInfo
-              movieId={movieDetails.id}
-              movieDetails={movieDetails}
-              mediaType={media_type}
-            />
+          <Grid item sm={3}>
+            {isMobile || (
+              <SideInfo
+                movieId={movieDetails.id}
+                movieDetails={movieDetails}
+                mediaType={media_type}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>

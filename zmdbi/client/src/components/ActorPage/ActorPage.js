@@ -1,17 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Credits from "../Credits/Credits";
+
 import { Link } from "react-router-dom";
-import { Container, Typography, Grid } from "@material-ui/core";
+import { Container, Typography, Grid, Box } from "@material-ui/core";
 import ActorCredits from "./ActorCredits";
-import { kategorieTeilung } from "../shared/kategorieTeilung";
+
 import "../../linkStyle.scss";
 import ProfilePicHolder from "../../images/profile_pic_holder_long.png";
 import NoImageHolderSmall from "../../images/no_image_holder_small.png";
-const ActorPage = () => {
-  let { actorId } = useParams();
+import { useMediaQuery } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
+const useStyles = makeStyles((theme) => ({
+  topInfo: {
+    display: "flex",
+  },
+  actorInfo: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: "15px",
+    },
+  },
+  biography: {
+    paddingLeft: "10px",
+    [theme.breakpoints.down("xs")]: {
+      paddingLeft: "0px",
+    },
+  },
+}));
+
+const ActorPage = () => {
+  let { personId } = useParams();
+  const classes = useStyles();
   const [actorDetails, setActorDetails] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [allCredits, setAllCredits] = useState(null);
@@ -19,15 +42,18 @@ const ActorPage = () => {
   const [creditsSortedByPopularity, setCreditsSortedByPopularity] = useState(
     null
   );
+
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isAlmostMobile = useMediaQuery("(max-width: 935px)");
   const [crewCredits, setCrewCredits] = useState(null);
 
   const currentYear = new Date().getFullYear();
 
   const fetchActorDetails = async () => {
     const actorDetails = await axios.get(
-      "http://localhost:5000/details/actor",
+      "https://arcane-reef-43492.herokuapp.com/details/actor",
       {
-        params: { actorId: actorId },
+        params: { actorId: personId },
       }
     );
 
@@ -36,9 +62,9 @@ const ActorPage = () => {
 
   const fetchAllCredits = async () => {
     const actorCredits = await axios.get(
-      "http://localhost:5000/details/actor/credits/all",
+      "https://arcane-reef-43492.herokuapp.com/details/actor/credits/all",
       {
-        params: { actorId: actorId },
+        params: { actorId: personId },
       }
     );
     setAllCredits(actorCredits.data);
@@ -114,81 +140,161 @@ const ActorPage = () => {
     fetchActorDetails();
     fetchAllCredits();
   }, []);
-  console.log("ACOTR DETES", actorDetails);
+
   return isLoaded ? (
     <Container>
       {actorDetails && (
-        <Grid container style={{ display: "flex", marginTop: "20px" }}>
-          <Grid item sm={3}>
+        <Grid
+          spacing={1}
+          container
+          style={{ display: "flex", marginTop: "20px" }}
+        >
+          <Grid
+            item
+            xs={12}
+            sm={4}
+            md={4}
+            lg={3}
+            className={isMobile && classes.topInfo}
+          >
             {actorDetails.profile_path ? (
-              <img
-                alt={actorDetails.name}
-                style={{ borderRadius: "5px" }}
-                src={`https://www.themoviedb.org/t/p/w300/${actorDetails.profile_path}`}
-              ></img>
+              <div>
+                <img
+                  alt={actorDetails.name}
+                  style={{ borderRadius: "5px" }}
+                  src={
+                    isAlmostMobile
+                      ? `https://www.themoviedb.org/t/p/w185/${actorDetails.profile_path}`
+                      : `https://www.themoviedb.org/t/p/w300/${actorDetails.profile_path}`
+                  }
+                ></img>
+              </div>
             ) : (
               <img
-                style={{ borderRadius: "5px", width: "300px", height: "450px" }}
+                alt={actorDetails.name}
+                style={{
+                  borderRadius: "5px",
+                  width: isAlmostMobile ? "185px" : "300px",
+                  height: isAlmostMobile ? "278px" : "450px",
+                }}
                 src={ProfilePicHolder}
               ></img>
             )}
-
-            <Typography color="primary" variant="h6">
-              Known For{" "}
-            </Typography>
-            <Typography>
-              {actorDetails.known_for_department
-                ? actorDetails.known_for_department
-                : "-"}
-            </Typography>
-            <Typography color="primary" variant="h6">
-              Gender{" "}
-            </Typography>
-            <Typography>
-              {actorDetails.gender === 1 ? "Female" : "Male"}
-            </Typography>
-            <Typography color="primary" variant="h6">
-              Birthday
-            </Typography>
-            <Typography>
-              {actorDetails.birthday ? (
-                <div>
-                  {actorDetails.birthday} (
-                  {Number(currentYear - actorDetails.birthday.slice(0, 4))}{" "}
-                  years old)
-                </div>
-              ) : (
-                "-"
+            <div className={classes.actorInfo}>
+              {isMobile && (
+                <Typography
+                  variant="h5"
+                  className="actorName"
+                  style={{ fontWeight: 600 }}
+                  gutterBottom
+                >
+                  {actorDetails.name}
+                </Typography>
               )}
-            </Typography>
-            <Typography color="primary" variant="h6">
-              Place of Birth{" "}
-            </Typography>
-            <Typography>
-              {actorDetails.place_of_birth ? actorDetails.place_of_birth : "-"}
-            </Typography>
+
+              <Box>
+                <Typography color="primary" variant="subtitle1">
+                  Known For{" "}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {actorDetails.known_for_department
+                    ? actorDetails.known_for_department
+                    : "-"}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography color="primary" variant="subtitle1">
+                  Gender{" "}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {actorDetails.gender === 1 ? "Female" : "Male"}
+                </Typography>
+              </Box>
+              {actorDetails.deathday ? (
+                <Box>
+                  <Typography color="primary" variant="subtitle1">
+                    Birthday
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    {actorDetails.birthday ? (
+                      <div>
+                        {actorDetails.birthday} (died at{" "}
+                        {Number(
+                          actorDetails.deathday.slice(0, 4) -
+                            actorDetails.birthday.slice(0, 4)
+                        )}{" "}
+                        years old)
+                      </div>
+                    ) : (
+                      "-"
+                    )}
+                  </Typography>
+                </Box>
+              ) : (
+                <Box>
+                  <Typography color="primary" variant="subtitle1">
+                    Birthday
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    {actorDetails.birthday ? (
+                      <div>
+                        {actorDetails.birthday} (
+                        {Number(
+                          currentYear - actorDetails.birthday.slice(0, 4)
+                        )}{" "}
+                        years old)
+                      </div>
+                    ) : (
+                      "-"
+                    )}
+                  </Typography>
+                </Box>
+              )}
+
+              <Box>
+                <Typography color="primary" variant="subtitle1">
+                  Place of Birth{" "}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {actorDetails.place_of_birth
+                    ? actorDetails.place_of_birth
+                    : "-"}
+                </Typography>
+              </Box>
+            </div>
           </Grid>
-          <Grid item sm={9} style={{ paddingLeft: "20px" }}>
-            <div>
-              <Typography
-                variant="h3"
-                style={{ marginBottom: "30px", fontWeight: 600 }}
-              >
-                {actorDetails.name}
-              </Typography>
-              <Typography variant="h6" style={{ marginBottom: "15px" }}>
-                Biography{" "}
-              </Typography>
-              <Typography variant="body1" style={{ marginBottom: "15px" }}>
-                {actorDetails.biography
-                  ? actorDetails.biography
-                  : "No biography"}
-              </Typography>
+          <Grid item xs={12} sm={7} md={8} lg={9}>
+            <div className={classes.biography}>
+              {!isMobile && (
+                <Typography
+                  variant="h4"
+                  style={{ fontWeight: 600 }}
+                  gutterBottom
+                >
+                  {actorDetails.name}
+                </Typography>
+              )}
+              <div>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  style={{ fontWeight: 600 }}
+                >
+                  Biography{" "}
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                  {actorDetails.biography
+                    ? actorDetails.biography
+                    : "No biography"}
+                </Typography>
+              </div>
             </div>
             {creditsSortedByPopularity.length > 0 && (
               <div>
-                {console.log("CREDS BY POP ", creditsSortedByPopularity)}
-                <Typography variant="h4" style={{ marginBottom: "15px" }}>
+                <Typography
+                  variant="h5"
+                  style={{ marginBottom: "15px", marginLeft: "10px" }}
+                >
                   Known For
                 </Typography>
                 <div
@@ -209,7 +315,6 @@ const ActorPage = () => {
                           pathname: `/details/${credit.media_type}/${credit.id}`,
                         }}
                       >
-                        {console.log(credit)}
                         {credit.poster_path ? (
                           <img
                             alt={credit.title}

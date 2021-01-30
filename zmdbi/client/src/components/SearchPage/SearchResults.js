@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Redirect, useHistory, useLocation, Link } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 import axios from "axios";
-import SearchResult from "./SearchResult";
+
 import SearchResultsSide from "./SearchResultsSide";
 import PageNumNav from "./PageNumNav";
-import { Container, Grid, Typography, Button, Paper } from "@material-ui/core";
+import { Container, Grid, Typography, Paper } from "@material-ui/core";
 import "../../index.css";
 import profilePicHolder from "../../images/profile_pic_holder_w92.png";
 import posterHolder from "../../images/no_image_holder_w92.png";
@@ -30,7 +30,7 @@ const SearchResults = () => {
 
   const fetchMovies = async () => {
     const searchedMovies = await axios.get(
-      "http://localhost:5000/search/movie",
+      "https://arcane-reef-43492.herokuapp.com/search/movie",
       {
         params: {
           searchQuery: history.location.state,
@@ -44,12 +44,15 @@ const SearchResults = () => {
     setTotalPagesMovies(searchedMovies.data.total_pages);
   };
   const fetchTv = async () => {
-    const searchedTv = await axios.get("http://localhost:5000/search/tv", {
-      params: {
-        searchQuery: history.location.state,
-        page: currentPage,
-      },
-    });
+    const searchedTv = await axios.get(
+      "https://arcane-reef-43492.herokuapp.com/search/tv",
+      {
+        params: {
+          searchQuery: history.location.state,
+          page: currentPage,
+        },
+      }
+    );
     console.log(searchedTv);
     setSearchedTv(searchedTv.data.results);
     setTotalResultsTv(searchedTv.data.total_results);
@@ -57,7 +60,7 @@ const SearchResults = () => {
   };
   const fetchPeople = async () => {
     const searchedPeople = await axios.get(
-      "http://localhost:5000/search/people",
+      "https://arcane-reef-43492.herokuapp.com/search/people",
       {
         params: {
           searchQuery: history.location.state,
@@ -95,8 +98,8 @@ const SearchResults = () => {
   return (
     <Container style={{ marginTop: "30px", minHeight: "60vh" }}>
       {isLoaded ? (
-        <Grid container>
-          <Grid xs={12} md={3}>
+        <Grid container style={{ justifyContent: "flex-end" }}>
+          <Grid xs={12} sm={5} md={4} lg={3}>
             <SearchResultsSide
               totalResultsMovies={totalResultsMovies}
               totalResultsPeople={totalResultsPeople}
@@ -105,13 +108,14 @@ const SearchResults = () => {
               setCurrentPage={setCurrentPage}
             />
           </Grid>
-          <Grid xs={12} md={9}>
+          <Grid xs={12} sm={7} md={8} lg={9}>
             {resultsType === "Movies" && (
               <div>
                 {console.log("SEARVHD MOIS", searchedMovies)}
                 {searchedMovies &&
                   searchedMovies.map((movie) => (
                     <Paper
+                      key={movie.id}
                       style={{
                         display: "flex",
                         marginBottom: "15px",
@@ -124,11 +128,16 @@ const SearchResults = () => {
                       >
                         {movie.poster_path ? (
                           <img
+                            alt={movie.title}
                             className="searchPic"
                             src={`https://image.tmdb.org/t/p/w92/${movie.poster_path}`}
                           ></img>
                         ) : (
-                          <img className="searchPic" src={posterHolder}></img>
+                          <img
+                            className="searchPic"
+                            src={posterHolder}
+                            alt={movie.title}
+                          ></img>
                         )}
                       </Link>
                       <div>
@@ -184,11 +193,16 @@ const SearchResults = () => {
                     >
                       {tv.poster_path ? (
                         <img
+                          alt={tv.name}
                           className="searchPic"
                           src={`https://image.tmdb.org/t/p/w92/${tv.poster_path}`}
                         ></img>
                       ) : (
-                        <img className="searchPic" src={posterHolder}></img>
+                        <img
+                          className="searchPic"
+                          src={posterHolder}
+                          alt={tv.name}
+                        ></img>
                       )}
                     </Link>
                     <div>
@@ -234,21 +248,26 @@ const SearchResults = () => {
                   >
                     {console.log(person)}
                     <Link
-                      to={`/actor/${person.id}`}
+                      to={`/person/${person.id}`}
                       style={{ height: "137px" }}
                     >
                       {person.profile_path ? (
                         <img
                           className="searchPic"
+                          alt={person.name}
                           src={`https://image.tmdb.org/t/p/w92/${person.profile_path}`}
                         ></img>
                       ) : (
-                        <img className="searchPic" src={profilePicHolder}></img>
+                        <img
+                          className="searchPic"
+                          src={profilePicHolder}
+                          alt={person.name}
+                        ></img>
                       )}
                     </Link>
                     <div>
                       <Link
-                        to={`/actor/${person.id}`}
+                        to={`/person/${person.id}`}
                         style={{ color: "black", textDecoration: "none" }}
                       >
                         <Typography

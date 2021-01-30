@@ -1,8 +1,8 @@
 import React from "react";
 import { createContext, useState, useContext } from "react";
 
-const SessionContext = React.createContext();
-const SessionContextUpdate = React.createContext();
+const SessionContext = createContext();
+const SessionContextUpdate = createContext();
 
 export function useSession() {
   return useContext(SessionContext);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "../../linkStyle.scss";
 import { kategorieTeilung } from "../shared/kategorieTeilung";
 import ActorCreditCategory from "./ActorCreditCategory";
@@ -6,7 +6,6 @@ import ActorCreditCategory from "./ActorCreditCategory";
 const ActorCredits = ({ changedCredits, crewCredits }) => {
   const categories = kategorieTeilung(crewCredits);
 
-  console.log("aaaa", categories.costume);
   return (
     <div>
       <div>

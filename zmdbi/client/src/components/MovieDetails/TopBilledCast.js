@@ -1,12 +1,20 @@
 import React from "react";
 import { Typography, Paper, Button } from "@material-ui/core";
-import { useParams, useRouteMatch, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NoProfilePic from "../../images/profile_pic_holder_smaller.png";
-const useStyles = makeStyles({
+import { useMediaQuery } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
   actorImage: {
+    width: "138px",
+    height: "175px",
     borderRadius: "5px 5px 0 0",
+    [theme.breakpoints.down("600")]: {
+      width: "92px",
+      height: "138px",
+    },
   },
   backrop: {
     zIndex: 0,
@@ -22,6 +30,10 @@ const useStyles = makeStyles({
   },
   actorPaper: {
     margin: "10px",
+    width: "137px",
+    [theme.breakpoints.down("600")]: {
+      width: "92px",
+    },
   },
   acotrSubtitle: {
     fontSize: "12px",
@@ -33,10 +45,12 @@ const useStyles = makeStyles({
     margin: "5px",
     marginLeft: "15px",
   },
-});
+}));
 
 const TopBilledCast = ({ topBilledCast, movieDetails, credits }) => {
   const classes = useStyles();
+
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   return topBilledCast.length > 0 ? (
     <div
@@ -48,27 +62,31 @@ const TopBilledCast = ({ topBilledCast, movieDetails, credits }) => {
       }}
     >
       {topBilledCast.map((actor) => (
-        <Paper className={classes.actorPaper}>
+        <Paper className={classes.actorPaper} key={actor.id}>
           {actor.profile_path ? (
             <Link
               to={{
-                pathname: `/actor/${actor.id}`,
+                pathname: `/person/${actor.id}`,
               }}
             >
               <img
+                alt={actor.name}
                 className={classes.actorImage}
-                src={`https://www.themoviedb.org/t/p/w138_and_h175_face/${actor.profile_path}`}
+                src={
+                  isMobile
+                    ? `https://www.themoviedb.org/t/p/w92/${actor.profile_path}`
+                    : `https://www.themoviedb.org/t/p/w138_and_h175_face/${actor.profile_path}`
+                }
               ></img>
             </Link>
           ) : (
             <Link
               to={{
-                pathname: `/actor/${actor.id}`,
+                pathname: `/person/${actor.id}`,
               }}
             >
               <img
                 alt={actor.name}
-                style={{ width: "138px", height: "175px" }}
                 className={classes.actorImage}
                 src={NoProfilePic}
               ></img>
@@ -81,7 +99,7 @@ const TopBilledCast = ({ topBilledCast, movieDetails, credits }) => {
               color: "black",
             }}
             to={{
-              pathname: `/actor/${actor.id}`,
+              pathname: `/person/${actor.id}`,
             }}
           >
             <Typography
@@ -103,22 +121,26 @@ const TopBilledCast = ({ topBilledCast, movieDetails, credits }) => {
           </Typography>
         </Paper>
       ))}
-      <div style={{ display: "flex", alignSelf: "center" }}>
-        <Link
-          style={{ textDecoration: "none" }}
-          to={{
-            pathname: `/credits/${movieDetails.id}`,
-            state: {
-              credits: credits,
-            },
-          }}
-        >
-          <Button style={{ width: "150px" }}>
-            <NavigateNextIcon />
-            Show Cast
-          </Button>
-        </Link>
-      </div>
+      {topBilledCast.length > 3 && (
+        <div style={{ display: "flex", alignSelf: "center" }}>
+          <Link
+            style={{ textDecoration: "none" }}
+            to={{
+              pathname: `/credits/${movieDetails.id}`,
+              state: {
+                credits: credits,
+              },
+            }}
+          >
+            <Button
+              style={{ width: "120px", display: "flex", alignItems: "center" }}
+            >
+              <NavigateNextIcon />
+              <Typography style={{ fontWeight: 500 }}>Show Cast</Typography>
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   ) : (
     <Typography>No Cast</Typography>

@@ -1,28 +1,36 @@
-import React, { useEffect } from "react";
-import { useSignedUpdate, useUsernameUpdate } from "./contexts/SignedContext";
+import React, { useEffect, useState } from "react";
+import { useSignedUpdate } from "./contexts/SignedContext";
 import axios from "axios";
-import { useParams, useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 import { Button, Typography, Container } from "@material-ui/core";
 const LoginApproved = () => {
   const setSigned = useSignedUpdate();
   const history = useHistory();
-  const setUsername = useUsernameUpdate();
+
+  const [loginSucess, setLoginSucess] = useState(false);
   console.log(history);
   const location = useLocation();
   const token = new URLSearchParams(location.search).get("request_token");
-
+  console.log("token", token);
   const createSessionId = async () => {
-    await axios.get("http://localhost:5000/getToken/getSessionId", {
-      params: { token: token },
-      withCredentials: true,
-    });
+    try {
+      axios.get(
+        "https://arcane-reef-43492.herokuapp.com/authentication/getSessionId",
+        {
+          params: { token: token },
+          withCredentials: true,
+        }
+      );
+      setSigned(true);
+      setLoginSucess(true);
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   useEffect(() => {
     createSessionId();
-
-    setSigned(true);
   }, []);
 
   return (
@@ -35,13 +43,20 @@ const LoginApproved = () => {
         flexDirection: "column",
       }}
     >
-      <Typography variant="h2">Login Successful</Typography>
+      {loginSucess ? (
+        <Typography variant="h3">Login Successful </Typography>
+      ) : (
+        <Typography variant="h3">Login Failed</Typography>
+      )}
+
       <Button
-        style={{ marginTop: "20px" }}
-        variant="contained"
-        onClick={() => (window.location = "http://localhost:3000/")}
+        style={{ marginTop: "20px", fontSize: "30px" }}
+        variant="text"
+        onClick={() =>
+          (window.location = "https://nameless-shore-33653.herokuapp.com/")
+        }
       >
-        GO BACK
+        GO BACK TO MAIN PAGE
       </Button>
     </Container>
   );

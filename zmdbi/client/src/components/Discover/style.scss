@@ -1,0 +1,18 @@
+@media only screen and (max-width: 760px) {
+  .searcherAndResults {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.selectMenu {
+  padding: 7px;
+}
+.selectMenu > option:hover {
+  background-color: black;
+  cursor: pointer;
+}

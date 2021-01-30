@@ -1,18 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Typography, Paper } from "@material-ui/core";
+import { Typography, Paper } from "@material-ui/core";
 
 const ActorCreditCategory = ({ credits }) => {
-  const [year, setYear] = useState(0);
-
   return (
     <div>
       <div>
-        {console.log("CRED", credits[0])}
-        {/* {console.log("CRED", credits)} */}
-
         {credits.length > 0 && (
-          <Typography variant="h6" style={{ marginTop: "10px" }}>
+          <Typography style={{ marginTop: "10px" }}>
             {credits[0].department || (
               <Typography variant="h6" style={{ marginTop: "10px" }}>
                 Acting
@@ -25,62 +20,64 @@ const ActorCreditCategory = ({ credits }) => {
           {credits &&
             credits.map((credit, i, array) => (
               <div
+                key={credit.id}
                 style={{
                   display: "flex",
-                  flexWrap: "wrap",
+
+                  flexWrap: "nowrap",
                   borderRadius: "5px",
                   margin: "10px",
                 }}
               >
-                {console.log(credit)}
-                <Typography
-                  variant="subtitle1"
-                  color="primary"
-                  style={{ textAlign: "center", width: "50px" }}
-                >
-                  {credit.release_date !== "3000"
-                    ? credit.release_date.slice(0, 4)
-                    : "-"}
-                  &nbsp;
-                </Typography>
-                <Link
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                    display: "flex",
-                  }}
-                  to={{
-                    pathname: `/details/${credit.media_type}/${credit.id}`,
-                  }}
-                >
+                <div>
                   <Typography
-                    className="hoverLink"
-                    style={{ fontWeight: "600", alignSelf: "center" }}
+                    variant="subtitle1"
+                    color="primary"
+                    style={{
+                      textAlign: "center",
+                      width: "50px",
+                    }}
                   >
-                    {credit.title}
+                    {credit.release_date !== "3000"
+                      ? credit.release_date.slice(0, 4)
+                      : "-"}
+                    &nbsp;
                   </Typography>
-                </Link>
-                &nbsp;
-                <Typography style={{ alignSelf: "center" }}>
-                  {credit.character && "  as " + credit.character}
-                  {credit.episode_count === 1 &&
-                    ` (in ${credit.episode_count} episode)`}
-                  {credit.episode_count > 1 &&
-                    ` (in ${credit.episode_count} episodes)`}
-                </Typography>
-                {i !== array.length - 1 &&
-                  credit.release_date.slice(0, 4) !==
-                    array[i + 1].release_date.slice(0, 4) && (
-                    <div
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <Typography style={{ fontWeight: "600" }} variant="body2">
+                    <Link
+                      className="hoverLink"
                       style={{
-                        width: "100%",
-                        borderBottom: "solid #DEDEDE 1px",
-                        margin: 0,
-                        padding: 0,
+                        textDecoration: "none",
+                        color: "black",
                       }}
-                    ></div>
-                  )}
-                {/* { <p>{credit.media_type === "tv" ? "tv" : "movie"}</p> */}
+                      to={{
+                        pathname: `/details/${credit.media_type}/${credit.id}`,
+                      }}
+                    >
+                      {credit.title}{" "}
+                    </Link>
+                    <Typography variant="subtitle2">
+                      {credit.character && "  as " + credit.character}
+                      {credit.episode_count === 1 &&
+                        ` (in ${credit.episode_count} episode)`}
+                      {credit.episode_count > 1 &&
+                        ` (in ${credit.episode_count} episodes)`}
+                    </Typography>
+                  </Typography>
+                  &nbsp;
+                  {i !== array.length - 1 &&
+                    credit.release_date.slice(0, 4) !==
+                      array[i + 1].release_date.slice(0, 4) && (
+                      <div
+                        style={{
+                          borderBottom: "solid #DEDEDE 10px",
+                          margin: 0,
+                        }}
+                      ></div>
+                    )}
+                </div>
               </div>
             ))}
         </Paper>

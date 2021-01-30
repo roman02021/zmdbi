@@ -1,0 +1,14 @@
+.backdrop {
+  z-index: 0;
+  position: absolute;
+  height: 632px;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: brightness(25%);
+  width: 100%;
+}
+@media only screen and (max-width: 600px) {
+  .backdrop {
+    height: 435px;
+  }
+}

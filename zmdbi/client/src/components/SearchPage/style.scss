@@ -12,3 +12,19 @@
 .searchPic {
   border-radius: 5px 0 0 5px;
 }
+
+@media only screen and (max-width: 680px) {
+  .searchCategoriesContainer {
+    max-width: 200px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .yes {
+    width: 100%;
+  }
+  .searchCategoriesContainer {
+    max-width: 100%;
+    width: 100% !important;
+    margin-bottom: 30px;
+  }
+}

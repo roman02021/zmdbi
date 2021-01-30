@@ -60,6 +60,10 @@ router.get("/this_day/movies", async (req, res) => {
     const moviesToday = await axios.get(
       `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.API_ENV}`
     );
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://nameless-shore-33653.herokuapp.com"
+    );
     res.json(moviesToday.data);
   } catch (err) {
     res.json(err);
@@ -69,6 +73,10 @@ router.get("/this_day/tv", async (req, res) => {
   try {
     const tvToday = await axios.get(
       `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.API_ENV}`
+    );
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://nameless-shore-33653.herokuapp.com"
     );
     res.json(tvToday.data);
   } catch (err) {
@@ -89,6 +97,10 @@ router.get("/upcoming", async (req, res) => {
   try {
     const upcoming = await axios.get(
       `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.API_ENV}&language=en-US&page=1`
+    );
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://nameless-shore-33653.herokuapp.com"
     );
     res.json(upcoming.data);
   } catch (err) {

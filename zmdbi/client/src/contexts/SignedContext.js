@@ -7,6 +7,7 @@ const UsernameContext = createContext();
 const UsernameContextUpdate = createContext();
 const UserIdContext = createContext();
 const UserIdContextUpdate = createContext();
+
 export function useSigned() {
   return useContext(SignedContext);
 }
@@ -34,6 +35,7 @@ function SignedProvider({ children }) {
   const [signed, setSigned] = useState(false);
   const [username, setUsername] = useState(null);
   const [userId, setUserId] = useState(null);
+
   return (
     <SignedContext.Provider value={signed}>
       <SignedContextUpdate.Provider value={setSigned}>

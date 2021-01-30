@@ -31,6 +31,7 @@ const Review = ({ reviews }) => {
     >
       <div>
         <img
+          alt={reviews.author}
           style={{
             borderRadius: "50%",
             margin: "10px 15px 0 10px",

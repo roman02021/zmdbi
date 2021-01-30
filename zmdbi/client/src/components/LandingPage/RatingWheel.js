@@ -7,7 +7,7 @@ export const RatingWheel = ({ rating, discover }) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    console.log(rating);
+
     ctx.beginPath();
     ctx.lineWidth = 6;
 

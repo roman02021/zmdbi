@@ -1,0 +1,35 @@
+@media only screen and (max-width: 1150px) {
+  .trendingActorContainer > div {
+    width: 100%;
+  }
+  .carouselAndActorsContainer {
+    flex-direction: column;
+  }
+  .carousel {
+    display: flex;
+    justify-content: center;
+  }
+}
+.carousel {
+  height: "439px";
+  border-radius: 10px;
+}
+.trendingActorContainer {
+  display: flex;
+  flex-direction: column;
+}
+@media only screen and (max-width: 880px) {
+  .carouselPosters {
+    width: 600px;
+    height: 337px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .carouselPosters {
+    width: 100vw;
+    height: calc(100vw * (9 / 16));
+    padding: 0;
+    margin: 0;
+  }
+}

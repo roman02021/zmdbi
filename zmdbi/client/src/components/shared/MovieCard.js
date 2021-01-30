@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./style.scss";
 import {
   Typography,
@@ -6,23 +6,21 @@ import {
   CardMedia,
   CardContent,
   IconButton,
-  ButtonGroup,
-  Button,
+  Box,
   ClickAwayListener,
 } from "@material-ui/core";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import WatchLaterIcon from "@material-ui/icons/WatchLater";
-import StarIcon from "@material-ui/icons/Star";
-import DoneIcon from "@material-ui/icons/Done";
-import Slider from "@material-ui/core/Slider";
 import noImageHolder from "../../images/no_image_holder.png";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/styles";
 import RatingWheel from "../LandingPage/RatingWheel";
 import { useUserId } from "../../contexts/SignedContext";
-import axios from "axios";
+
+import MovieDropLoggedOut from "./MovieDropLoggedOut";
+import MovieDropLogged from "./MovieDropLogged";
+import { useSigned } from "../../contexts/SignedContext";
 const MovieCard = ({ movie, imgWidth, imgHeight, mediaType }) => {
+  const signed = useSigned();
   const userId = useUserId();
 
   let borderRadius;
@@ -39,44 +37,8 @@ const MovieCard = ({ movie, imgWidth, imgHeight, mediaType }) => {
     borderRadius = 5;
     height = "auto";
   }
-  const [score, setScore] = useState(0);
 
-  const addFavourite = async () => {
-    await axios.get("http://localhost:5000/getToken/addFavourite", {
-      withCredentials: true,
-      params: {
-        user_id: userId,
-        media_id: movie.id,
-        media_type: mediaType,
-      },
-    });
-  };
-  const addWatchlist = async () => {
-    await axios.get("http://localhost:5000/getToken/addWatchlist", {
-      withCredentials: true,
-      params: {
-        user_id: userId,
-        media_id: movie.id,
-        media_type: mediaType,
-      },
-    });
-  };
-  const addRating = async () => {
-    await axios.get("http://localhost:5000/getToken/addRating", {
-      withCredentials: true,
-      params: {
-        score: score,
-        media_id: movie.id,
-      },
-    });
-  };
-  const rater = useRef(null);
-
-  const showRater = () => {
-    rater.current.style.display = "block";
-  };
-
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme) => ({
     root: {
       backgroundColor: `${bgColor}`,
       overflow: "visible",
@@ -90,12 +52,10 @@ const MovieCard = ({ movie, imgWidth, imgHeight, mediaType }) => {
     cardMedia: {
       width: `${imgWidth}px`,
       height: `${imgHeight}px`,
-      borderRadius: `${borderRadius}px`,
+      borderRadius: "5px 5px 0 0",
     },
-  });
-  const handleScore = (e, newValue) => {
-    setScore(newValue);
-  };
+  }));
+
   const [dropDown, setDropDown] = useState(false);
 
   const classes = useStyles();
@@ -109,94 +69,35 @@ const MovieCard = ({ movie, imgWidth, imgHeight, mediaType }) => {
       ) : (
         <RatingWheel rating={movie.vote_average * 10}></RatingWheel>
       )}
-
       <ClickAwayListener onClickAway={() => setDropDown(false)}>
-        <IconButton
-          className="dropDownButton"
-          disableFocusRipple
-          disableRipple
-          onClick={() => setDropDown(true)}
-          style={{
-            backgroundColor: "rgba(255, 255, 255, 0.3)",
-            position: "absolute",
-            right: "5px",
-            padding: "0px",
-            top: "5px",
-          }}
-        >
-          {dropDown || <MoreVertIcon />}
-          {dropDown && (
-            <ButtonGroup
-              fullWidth="true"
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                flexGrow: 1,
-              }}
-              variant="contained"
-              orientation="vertical"
-              color="primary"
-              aria-label="vertical outlined primary button group"
-            >
-              <Button
-                startIcon={<WatchLaterIcon></WatchLaterIcon>}
-                onClick={addWatchlist}
-              >
-                Watchlist
-              </Button>
-              <Button
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                }}
-                startIcon={<FavoriteIcon></FavoriteIcon>}
-                onClick={addFavourite}
-              >
-                Favorite
-              </Button>
-              <Button
-                onClick={showRater}
-                startIcon={<StarIcon></StarIcon>}
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                }}
-              >
-                Rate
-              </Button>
-              <form
-                onSubmit={addRating}
-                style={{
-                  display: "none",
-                  backgroundColor: "white",
-                  width: "100%",
-                }}
-                ref={rater}
-              >
-                <Slider
-                  fullWidth
-                  style={{ width: "80%" }}
-                  value={score}
-                  onChange={handleScore}
-                  valueLabelDisplay="auto"
-                  max="10"
-                ></Slider>
-                <Button
-                  color="primary"
-                  fullWidth
-                  style={{ width: "100%" }}
-                  type="submit"
-                  startIcon={<DoneIcon></DoneIcon>}
-                >
-                  Confirm
-                </Button>
-              </form>
-            </ButtonGroup>
+        <Box>
+          <IconButton
+            className="dropDownButton"
+            disableFocusRipple
+            disableRipple
+            children={<MoreVertIcon />}
+            onClick={() => setDropDown(!dropDown)}
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              position: "absolute",
+              right: "5px",
+              padding: "0px",
+              top: "5px",
+            }}
+          ></IconButton>
+          {dropDown && !signed && <MovieDropLoggedOut />}
+          {dropDown && signed && (
+            <MovieDropLogged
+              mediaType={mediaType}
+              movieId={movie.id}
+              userId={userId}
+            />
           )}
-        </IconButton>
+        </Box>
       </ClickAwayListener>
 
       <Link
+        style={{ width: "200px" }}
         to={{
           pathname: `/details/${mediaType}/${movie.id}`,
         }}
@@ -215,7 +116,6 @@ const MovieCard = ({ movie, imgWidth, imgHeight, mediaType }) => {
           ></CardMedia>
         )}
       </Link>
-
       <CardContent style={{ padding: "0px", marginLeft: "3px" }}>
         <Link
           props={movie.id}

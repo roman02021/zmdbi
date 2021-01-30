@@ -4,11 +4,10 @@ const mongoose = require("mongoose");
 const axios = require("axios");
 const cookieParser = require("cookie-parser");
 //Routes
-const movies = require("./routes/movies.js");
-const filterGenre = require("./routes/filterGenre");
-const sortBy = require("./routes/sortBy");
+const media = require("./routes/media");
+
 const details = require("./routes/details");
-const getToken = require("./routes/getToken");
+const authentication = require("./routes/authentication");
 const landingPage = require("./routes/landigPage");
 const search = require("./routes/search");
 require("dotenv").config();
@@ -22,17 +21,21 @@ app.listen(PORT, () => {
 });
 //Middleware
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(
+  cors({
+    origin: "https://nameless-shore-33653.herokuapp.com",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
+  console.log("hello");
   res.send("hello");
 });
 
-app.use("/movies", movies);
-app.use("/filterGenre", filterGenre);
-app.use("/sortBy", sortBy);
+app.use("/media", media);
 app.use("/details", details);
-app.use("/getToken", getToken);
+app.use("/authentication", authentication);
 app.use("/landingPage", landingPage);
 app.use("/search", search);

@@ -3,16 +3,24 @@ import axios from "axios";
 import { Typography, Button } from "@material-ui/core";
 
 import { Link } from "react-router-dom";
-
+import { useMediaQuery } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+const useStyles = makeStyles({
+  hideKeywords: {
+    display: "none",
+  },
+});
 const SideInfo = ({ movieId, movieDetails, mediaType }) => {
-  const [keywords, setKeywords] = useState(null);
+  const classes = useStyles();
 
+  const [keywords, setKeywords] = useState(null);
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const [loaded, setLoaded] = useState(false);
-  console.log("hehe", keywords);
+
   const fetchData = async () => {
     try {
       const keywords = await axios.get(
-        `http://localhost:5000/details/${mediaType}/keywords`,
+        `https://arcane-reef-43492.herokuapp.com/details/${mediaType}/keywords`,
         {
           params: { id: movieId },
         }
@@ -74,39 +82,41 @@ const SideInfo = ({ movieId, movieDetails, mediaType }) => {
               </Typography>
             )
           ) : (
-            <Typography>{Number(movieDetails.revenue).toFixed(2)}</Typography>
+            <Typography>{Number(movieDetails.revenue).toFixed(2)} $</Typography>
           )
         ) : (
           "-"
         )}
-
-        <Typography variant="h6" style={{ margin: "10px 0 10px 0" }}>
-          Keywords
-        </Typography>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {keywords ? (
-            keywords.map((keyword) => (
-              <Link
-                to={{
-                  pathname: `/search/${keyword.name}`,
-                  state: keyword.name,
-                }}
-                style={{ textDecoration: "none" }}
-              >
-                <Button
-                  onClick={(e) => {
-                    localStorage.setItem("searchString", keyword.name);
+        <div className={isMobile && classes.hideKeywords}>
+          <Typography variant="h6" style={{ margin: "10px 0 10px 0" }}>
+            Keywords
+          </Typography>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            {keywords ? (
+              keywords.map((keyword) => (
+                <Link
+                  key={keyword.id}
+                  to={{
+                    pathname: `/search/${keyword.name}`,
+                    state: keyword.name,
                   }}
-                  variant="outlined"
-                  style={{ margin: "5px", padding: "4px" }}
+                  style={{ textDecoration: "none" }}
                 >
-                  {keyword.name}
-                </Button>
-              </Link>
-            ))
-          ) : (
-            <Typography>No keywords have been added.</Typography>
-          )}
+                  <Button
+                    onClick={(e) => {
+                      localStorage.setItem("searchString", keyword.name);
+                    }}
+                    variant="outlined"
+                    style={{ margin: "5px", padding: "4px" }}
+                  >
+                    {keyword.name}
+                  </Button>
+                </Link>
+              ))
+            ) : (
+              <Typography>No keywords have been added.</Typography>
+            )}
+          </div>
         </div>
       </div>
     )

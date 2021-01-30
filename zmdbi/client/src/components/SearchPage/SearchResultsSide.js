@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Paper } from "@material-ui/core";
+import { Typography, Button, Paper, useMediaQuery } from "@material-ui/core";
 
 import "./style.scss";
 
@@ -13,6 +13,8 @@ const SearchResultsSide = ({
   console.log(totalResultsPeople);
   const [categories, setCategories] = useState([]);
   console.log("hhe", totalResultsPeople);
+
+  const isSmall = useMediaQuery("(max-width: 100px)");
 
   useEffect(() => {
     console.log(categories);
@@ -37,10 +39,11 @@ const SearchResultsSide = ({
       }
     );
   }, [totalResultsTv, totalResultsMovies, totalResultsPeople]);
-  console.log("CATE", categories);
+
+  console.log("CATE", isSmall);
   return (
-    <div>
-      <Paper style={{ width: "250px" }}>
+    <div className="yes">
+      <Paper style={{ width: "250px" }} className="searchCategoriesContainer">
         <Typography
           variant="h6"
           style={{

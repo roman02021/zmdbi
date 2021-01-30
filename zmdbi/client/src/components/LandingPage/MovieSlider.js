@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import MovieCard from "../shared/MovieCard";
 import { Box } from "@material-ui/core";
 
@@ -21,6 +21,7 @@ const MovieSlider = ({ props, mediaType }) => {
     >
       {props.map((movie) => (
         <MovieCard
+          key={movie.id}
           movie={movie}
           imgHeight="231"
           imgWidth="154"
