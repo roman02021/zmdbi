@@ -20,7 +20,7 @@ const SideInfo = ({ movieId, movieDetails, mediaType }) => {
   const fetchData = async () => {
     try {
       const keywords = await axios.get(
-        `http://localhost:5000/details/${mediaType}/keywords`,
+        `${process.env.REACT_APP_SERVER_URL}/details/${mediaType}/keywords`,
         {
           params: { id: movieId },
         }
