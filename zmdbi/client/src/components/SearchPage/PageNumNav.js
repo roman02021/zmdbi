@@ -1,15 +1,14 @@
-import React from "react";
-import { Button, Typography } from "@material-ui/core";
+import React from 'react';
+import { Button, Typography } from '@material-ui/core';
 
-import FirstPageIcon from "@material-ui/icons/FirstPage";
-import LastPageIcon from "@material-ui/icons/LastPage";
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import LastPageIcon from '@material-ui/icons/LastPage';
 
 const PageNumNav = ({ totalPages, currentPage, setCurrentPage }) => {
   let totalPagesArray = Array.from(Array(totalPages), (_, x) => x);
-  console.log(totalPages);
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         {totalPages ? (
           <Button>
             <FirstPageIcon onClick={() => setCurrentPage(1)} />
@@ -24,12 +23,10 @@ const PageNumNav = ({ totalPages, currentPage, setCurrentPage }) => {
             currentPage <= totalPages &&
             currentPage >= totalPages - 4
           ) {
-            console.log("Current PAge", currentPage);
-            console.log("THIRD CONDITION");
             if (pageNum + 1 === currentPage) {
               return (
                 <Button
-                  style={{ backgroundColor: "#032541", color: "white" }}
+                  style={{ backgroundColor: '#032541', color: 'white' }}
                   onClick={() => setCurrentPage(pageNum + 1)}
                 >
                   <Typography>{pageNum + 1}</Typography>
@@ -43,11 +40,11 @@ const PageNumNav = ({ totalPages, currentPage, setCurrentPage }) => {
               );
             }
           } else if (pageNum < 7 && currentPage < 7) {
-            console.log("FIRST CONDITION");
+            console.log('FIRST CONDITION');
             if (pageNum + 1 === currentPage) {
               return (
                 <Button
-                  style={{ backgroundColor: "#032541", color: "white" }}
+                  style={{ backgroundColor: '#032541', color: 'white' }}
                   onClick={() => setCurrentPage(pageNum + 1)}
                 >
                   <Typography>{pageNum + 1}</Typography>
@@ -66,11 +63,11 @@ const PageNumNav = ({ totalPages, currentPage, setCurrentPage }) => {
             currentPage >= 7 &&
             pageNum + 1 < totalPages - 1
           ) {
-            console.log("SECOND CONDITION");
+            console.log('SECOND CONDITION');
             if (pageNum + 1 === currentPage) {
               return (
                 <Button
-                  style={{ backgroundColor: "#032541", color: "white" }}
+                  style={{ backgroundColor: '#032541', color: 'white' }}
                   onClick={() => setCurrentPage(pageNum + 1)}
                 >
                   <Typography>{pageNum + 1}</Typography>

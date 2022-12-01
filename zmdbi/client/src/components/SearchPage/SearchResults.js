@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation, Link } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation, Link } from 'react-router-dom';
+import axios from 'axios';
 
-import SearchResultsSide from "./SearchResultsSide";
-import PageNumNav from "./PageNumNav";
-import { Container, Grid, Typography, Paper } from "@material-ui/core";
-import "../../index.css";
-import profilePicHolder from "../../images/profile_pic_holder_w92.png";
-import posterHolder from "../../images/no_image_holder_w92.png";
+import SearchResultsSide from './SearchResultsSide';
+import PageNumNav from './PageNumNav';
+import { Container, Grid, Typography, Paper } from '@material-ui/core';
+import '../../index.css';
+import profilePicHolder from '../../images/profile_pic_holder_w92.png';
+import posterHolder from '../../images/no_image_holder_w92.png';
 
 const SearchResults = () => {
   const history = useHistory();
@@ -17,7 +17,7 @@ const SearchResults = () => {
   const [searchedTv, setSearchedTv] = useState(null);
   const [searchedPeople, setSearchedPeople] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [resultsType, setResultsType] = useState("Movies");
+  const [resultsType, setResultsType] = useState('Movies');
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -30,7 +30,7 @@ const SearchResults = () => {
 
   const fetchMovies = async () => {
     const searchedMovies = await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/search/movie",
+      'http://localhost:5000/search/movie',
       {
         params: {
           searchQuery: history.location.state,
@@ -38,29 +38,24 @@ const SearchResults = () => {
         },
       }
     );
-    console.log("MOVIES", searchedMovies);
     setSearchedMovies(searchedMovies.data.results);
     setTotalResultsMovies(searchedMovies.data.total_results);
     setTotalPagesMovies(searchedMovies.data.total_pages);
   };
   const fetchTv = async () => {
-    const searchedTv = await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/search/tv",
-      {
-        params: {
-          searchQuery: history.location.state,
-          page: currentPage,
-        },
-      }
-    );
-    console.log(searchedTv);
+    const searchedTv = await axios.get('http://localhost:5000/search/tv', {
+      params: {
+        searchQuery: history.location.state,
+        page: currentPage,
+      },
+    });
     setSearchedTv(searchedTv.data.results);
     setTotalResultsTv(searchedTv.data.total_results);
     setTotalPagesTv(searchedTv.data.total_pages);
   };
   const fetchPeople = async () => {
     const searchedPeople = await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/search/people",
+      'http://localhost:5000/search/people',
       {
         params: {
           searchQuery: history.location.state,
@@ -68,7 +63,7 @@ const SearchResults = () => {
         },
       }
     );
-    console.log("TV", searchedPeople);
+    console.log('TV', searchedPeople);
     setSearchedPeople(searchedPeople.data.results);
     setTotalResultsPeople(searchedPeople.data.total_results);
     setTotalPagesPeople(searchedPeople.data.total_pages);
@@ -86,19 +81,19 @@ const SearchResults = () => {
   }, [location.state]);
 
   useEffect(() => {
-    if (resultsType === "Movies") {
+    if (resultsType === 'Movies') {
       fetchMovies();
-    } else if (resultsType === "TV") {
+    } else if (resultsType === 'TV') {
       fetchTv();
-    } else if (resultsType === "People") {
+    } else if (resultsType === 'People') {
       fetchPeople();
     }
   }, [currentPage]);
 
   return (
-    <Container style={{ marginTop: "30px", minHeight: "60vh" }}>
+    <Container style={{ marginTop: '30px', minHeight: '60vh' }}>
       {isLoaded ? (
-        <Grid container style={{ justifyContent: "flex-end" }}>
+        <Grid container style={{ justifyContent: 'flex-end' }}>
           <Grid xs={12} sm={5} md={4} lg={3}>
             <SearchResultsSide
               totalResultsMovies={totalResultsMovies}
@@ -109,22 +104,22 @@ const SearchResults = () => {
             />
           </Grid>
           <Grid xs={12} sm={7} md={8} lg={9}>
-            {resultsType === "Movies" && (
+            {resultsType === 'Movies' && (
               <div>
-                {console.log("SEARVHD MOIS", searchedMovies)}
+                {console.log('SEARVHD MOIS', searchedMovies)}
                 {searchedMovies &&
                   searchedMovies.map((movie) => (
                     <Paper
                       key={movie.id}
                       style={{
-                        display: "flex",
-                        marginBottom: "15px",
+                        display: 'flex',
+                        marginBottom: '15px',
                       }}
                     >
                       {console.log(movie)}
                       <Link
                         to={`/details/movie/${movie.id}`}
-                        style={{ height: "137px" }}
+                        style={{ height: '137px' }}
                       >
                         {movie.poster_path ? (
                           <img
@@ -144,26 +139,26 @@ const SearchResults = () => {
                         <Link
                           to={`/details/movie/${movie.id}`}
                           style={{
-                            textDecoration: "none",
+                            textDecoration: 'none',
                           }}
                         >
                           <Typography
                             className="hoverStyleTitle"
                             variant="h6"
                             style={{
-                              margin: "5px 0px 5px 10px",
-                              color: "black",
+                              margin: '5px 0px 5px 10px',
+                              color: 'black',
                             }}
                           >
                             {movie.title}
                           </Typography>
                         </Link>
                         {movie.release_date ? (
-                          <Typography style={{ margin: "5px 0px 5px 10px" }}>
+                          <Typography style={{ margin: '5px 0px 5px 10px' }}>
                             {movie.release_date.slice(0, 4)}
                           </Typography>
                         ) : (
-                          <Typography style={{ margin: "5px 0px 5px 10px" }}>
+                          <Typography style={{ margin: '5px 0px 5px 10px' }}>
                             Not Released
                           </Typography>
                         )}
@@ -177,19 +172,19 @@ const SearchResults = () => {
                 />
               </div>
             )}
-            {resultsType === "TV" && (
+            {resultsType === 'TV' && (
               <div>
                 {searchedTv.map((tv) => (
                   <Paper
                     style={{
-                      display: "flex",
-                      marginBottom: "15px",
+                      display: 'flex',
+                      marginBottom: '15px',
                     }}
                   >
                     {console.log(tv)}
                     <Link
                       to={`/details/tv/${tv.id}`}
-                      style={{ height: "137px" }}
+                      style={{ height: '137px' }}
                     >
                       {tv.poster_path ? (
                         <img
@@ -208,22 +203,22 @@ const SearchResults = () => {
                     <div>
                       <Link
                         to={`/details/movie/${tv.id}`}
-                        style={{ color: "black", textDecoration: "none" }}
+                        style={{ color: 'black', textDecoration: 'none' }}
                       >
                         <Typography
                           variant="h6"
                           className="hoverStyleTitle"
-                          style={{ margin: "5px 0px 5px 10px" }}
+                          style={{ margin: '5px 0px 5px 10px' }}
                         >
                           {tv.name}
                         </Typography>
                       </Link>
                       {tv.first_air_date ? (
-                        <Typography style={{ margin: "5px 0px 5px 10px" }}>
+                        <Typography style={{ margin: '5px 0px 5px 10px' }}>
                           {tv.first_air_date.slice(0, 4)}
                         </Typography>
                       ) : (
-                        <Typography style={{ margin: "5px 0px 5px 10px" }}>
+                        <Typography style={{ margin: '5px 0px 5px 10px' }}>
                           Not Released
                         </Typography>
                       )}
@@ -237,19 +232,19 @@ const SearchResults = () => {
                 />
               </div>
             )}
-            {resultsType === "People" && (
+            {resultsType === 'People' && (
               <div>
                 {searchedPeople.map((person) => (
                   <Paper
                     style={{
-                      display: "flex",
-                      marginBottom: "15px",
+                      display: 'flex',
+                      marginBottom: '15px',
                     }}
                   >
                     {console.log(person)}
                     <Link
                       to={`/person/${person.id}`}
-                      style={{ height: "137px" }}
+                      style={{ height: '137px' }}
                     >
                       {person.profile_path ? (
                         <img
@@ -268,17 +263,17 @@ const SearchResults = () => {
                     <div>
                       <Link
                         to={`/person/${person.id}`}
-                        style={{ color: "black", textDecoration: "none" }}
+                        style={{ color: 'black', textDecoration: 'none' }}
                       >
                         <Typography
                           variant="h6"
                           className="hoverStyleTitle"
-                          style={{ margin: "5px 0px 5px 10px" }}
+                          style={{ margin: '5px 0px 5px 10px' }}
                         >
                           {person.name}
                         </Typography>
                       </Link>
-                      <Typography style={{ margin: "5px 0px 5px 10px" }}>
+                      <Typography style={{ margin: '5px 0px 5px 10px' }}>
                         {person.known_for_department}
                       </Typography>
                     </div>

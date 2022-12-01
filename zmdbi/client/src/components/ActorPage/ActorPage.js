@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-import { Link } from "react-router-dom";
-import { Container, Typography, Grid, Box } from "@material-ui/core";
-import ActorCredits from "./ActorCredits";
+import { Link } from 'react-router-dom';
+import { Container, Typography, Grid, Box } from '@material-ui/core';
+import ActorCredits from './ActorCredits';
 
-import "../../linkStyle.scss";
-import ProfilePicHolder from "../../images/profile_pic_holder_long.png";
-import NoImageHolderSmall from "../../images/no_image_holder_small.png";
-import { useMediaQuery } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import '../../linkStyle.scss';
+import ProfilePicHolder from '../../images/profile_pic_holder_long.png';
+import NoImageHolderSmall from '../../images/no_image_holder_small.png';
+import { useMediaQuery } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   topInfo: {
-    display: "flex",
+    display: 'flex',
   },
   actorInfo: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    [theme.breakpoints.down("xs")]: {
-      marginLeft: "15px",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: '15px',
     },
   },
   biography: {
-    paddingLeft: "10px",
-    [theme.breakpoints.down("xs")]: {
-      paddingLeft: "0px",
+    paddingLeft: '10px',
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: '0px',
     },
   },
 }));
@@ -39,19 +39,18 @@ const ActorPage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [allCredits, setAllCredits] = useState(null);
   const [changedCredits, setChangedCredts] = useState(null);
-  const [creditsSortedByPopularity, setCreditsSortedByPopularity] = useState(
-    null
-  );
+  const [creditsSortedByPopularity, setCreditsSortedByPopularity] =
+    useState(null);
 
-  const isMobile = useMediaQuery("(max-width: 600px)");
-  const isAlmostMobile = useMediaQuery("(max-width: 935px)");
+  const isMobile = useMediaQuery('(max-width: 600px)');
+  const isAlmostMobile = useMediaQuery('(max-width: 935px)');
   const [crewCredits, setCrewCredits] = useState(null);
 
   const currentYear = new Date().getFullYear();
 
   const fetchActorDetails = async () => {
     const actorDetails = await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/details/actor",
+      `${process.env.REACT_APP_SERVER_URL}/details/actor`,
       {
         params: { actorId: personId },
       }
@@ -62,7 +61,7 @@ const ActorPage = () => {
 
   const fetchAllCredits = async () => {
     const actorCredits = await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/details/actor/credits/all",
+      `${process.env.REACT_APP_SERVER_URL}/details/actor/credits/all`,
       {
         params: { actorId: personId },
       }
@@ -80,17 +79,17 @@ const ActorPage = () => {
 
   const renameAndSortByReleaseDate = () => {
     let changedCredits = allCredits.cast.map((credit) => {
-      if (credit.hasOwnProperty("first_air_date")) {
+      if (credit.hasOwnProperty('first_air_date')) {
         credit.release_date = credit.first_air_date;
-        if (credit.hasOwnProperty("name")) {
+        if (credit.hasOwnProperty('name')) {
           credit.title = credit.name;
           delete credit.name;
         }
         delete credit.first_air_date;
         return credit;
       } else {
-        if (credit.release_date === undefined || credit.release_date === "") {
-          credit.release_date = "3000";
+        if (credit.release_date === undefined || credit.release_date === '') {
+          credit.release_date = '3000';
         }
         return credit;
       }
@@ -103,17 +102,17 @@ const ActorPage = () => {
     );
 
     let changedCrewCredits = allCredits.crew.map((credit) => {
-      if (credit.hasOwnProperty("first_air_date")) {
+      if (credit.hasOwnProperty('first_air_date')) {
         credit.release_date = credit.first_air_date;
-        if (credit.hasOwnProperty("name")) {
+        if (credit.hasOwnProperty('name')) {
           credit.title = credit.name;
           delete credit.name;
         }
         delete credit.first_air_date;
         return credit;
       } else {
-        if (credit.release_date === undefined || credit.release_date === "") {
-          credit.release_date = "3000";
+        if (credit.release_date === undefined || credit.release_date === '') {
+          credit.release_date = '3000';
         }
         return credit;
       }
@@ -147,7 +146,7 @@ const ActorPage = () => {
         <Grid
           spacing={1}
           container
-          style={{ display: "flex", marginTop: "20px" }}
+          style={{ display: 'flex', marginTop: '20px' }}
         >
           <Grid
             item
@@ -161,7 +160,7 @@ const ActorPage = () => {
               <div>
                 <img
                   alt={actorDetails.name}
-                  style={{ borderRadius: "5px" }}
+                  style={{ borderRadius: '5px' }}
                   src={
                     isAlmostMobile
                       ? `https://www.themoviedb.org/t/p/w185/${actorDetails.profile_path}`
@@ -173,9 +172,9 @@ const ActorPage = () => {
               <img
                 alt={actorDetails.name}
                 style={{
-                  borderRadius: "5px",
-                  width: isAlmostMobile ? "185px" : "300px",
-                  height: isAlmostMobile ? "278px" : "450px",
+                  borderRadius: '5px',
+                  width: isAlmostMobile ? '185px' : '300px',
+                  height: isAlmostMobile ? '278px' : '450px',
                 }}
                 src={ProfilePicHolder}
               ></img>
@@ -194,20 +193,20 @@ const ActorPage = () => {
 
               <Box>
                 <Typography color="primary" variant="subtitle1">
-                  Known For{" "}
+                  Known For{' '}
                 </Typography>
                 <Typography variant="subtitle2">
                   {actorDetails.known_for_department
                     ? actorDetails.known_for_department
-                    : "-"}
+                    : '-'}
                 </Typography>
               </Box>
               <Box>
                 <Typography color="primary" variant="subtitle1">
-                  Gender{" "}
+                  Gender{' '}
                 </Typography>
                 <Typography variant="subtitle2">
-                  {actorDetails.gender === 1 ? "Female" : "Male"}
+                  {actorDetails.gender === 1 ? 'Female' : 'Male'}
                 </Typography>
               </Box>
               {actorDetails.deathday ? (
@@ -218,15 +217,15 @@ const ActorPage = () => {
                   <Typography variant="subtitle2">
                     {actorDetails.birthday ? (
                       <div>
-                        {actorDetails.birthday} (died at{" "}
+                        {actorDetails.birthday} (died at{' '}
                         {Number(
                           actorDetails.deathday.slice(0, 4) -
                             actorDetails.birthday.slice(0, 4)
-                        )}{" "}
+                        )}{' '}
                         years old)
                       </div>
                     ) : (
-                      "-"
+                      '-'
                     )}
                   </Typography>
                 </Box>
@@ -241,11 +240,11 @@ const ActorPage = () => {
                         {actorDetails.birthday} (
                         {Number(
                           currentYear - actorDetails.birthday.slice(0, 4)
-                        )}{" "}
+                        )}{' '}
                         years old)
                       </div>
                     ) : (
-                      "-"
+                      '-'
                     )}
                   </Typography>
                 </Box>
@@ -253,12 +252,12 @@ const ActorPage = () => {
 
               <Box>
                 <Typography color="primary" variant="subtitle1">
-                  Place of Birth{" "}
+                  Place of Birth{' '}
                 </Typography>
                 <Typography variant="subtitle2">
                   {actorDetails.place_of_birth
                     ? actorDetails.place_of_birth
-                    : "-"}
+                    : '-'}
                 </Typography>
               </Box>
             </div>
@@ -280,12 +279,12 @@ const ActorPage = () => {
                   gutterBottom
                   style={{ fontWeight: 600 }}
                 >
-                  Biography{" "}
+                  Biography{' '}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
                   {actorDetails.biography
                     ? actorDetails.biography
-                    : "No biography"}
+                    : 'No biography'}
                 </Typography>
               </div>
             </div>
@@ -293,24 +292,24 @@ const ActorPage = () => {
               <div>
                 <Typography
                   variant="h5"
-                  style={{ marginBottom: "15px", marginLeft: "10px" }}
+                  style={{ marginBottom: '15px', marginLeft: '10px' }}
                 >
                   Known For
                 </Typography>
                 <div
                   style={{
-                    display: "flex",
-                    overflowX: "scroll",
-                    width: "auto",
+                    display: 'flex',
+                    overflowX: 'scroll',
+                    width: 'auto',
                   }}
                 >
                   {creditsSortedByPopularity.map((credit) => (
                     <div
-                      style={{ margin: "10px", width: "150px" }}
+                      style={{ margin: '10px', width: '150px' }}
                       key={credit.credit_id}
                     >
                       <Link
-                        style={{ textDecoration: "none", color: "black" }}
+                        style={{ textDecoration: 'none', color: 'black' }}
                         to={{
                           pathname: `/details/${credit.media_type}/${credit.id}`,
                         }}
@@ -318,13 +317,13 @@ const ActorPage = () => {
                         {credit.poster_path ? (
                           <img
                             alt={credit.title}
-                            style={{ borderRadius: "5px" }}
+                            style={{ borderRadius: '5px' }}
                             src={`https://www.themoviedb.org/t/p/w150_and_h225_bestv2${credit.poster_path}`}
                           />
                         ) : (
                           <img
                             alt={credit.title}
-                            style={{ borderRadius: "5px" }}
+                            style={{ borderRadius: '5px' }}
                             src={NoImageHolderSmall}
                           />
                         )}

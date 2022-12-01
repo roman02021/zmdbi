@@ -1,6 +1,6 @@
-import React from "react";
-import MovieCard from "../shared/MovieCard";
-import { Box } from "@material-ui/core";
+import React from 'react';
+import MovieCard from '../shared/MovieCard';
+import { Box } from '@material-ui/core';
 
 const MovieSlider = ({ props, mediaType }) => {
   return (
@@ -9,14 +9,14 @@ const MovieSlider = ({ props, mediaType }) => {
       m={5}
       height="auto"
       style={{
-        backgroundColor: "#FAFAFA",
-        margin: "0",
-        marginTop: "15px",
-        display: "flex",
-        width: "100%",
-        overflowX: "scroll",
-        overflowY: "hidden",
-        paddingBottom: "none",
+        backgroundColor: '#FAFAFA',
+        margin: '0',
+        marginTop: '15px',
+        display: 'flex',
+        width: '100%',
+        overflowX: 'scroll',
+        overflowY: 'hidden',
+        paddingBottom: 'none',
       }}
     >
       {props.map((movie) => (

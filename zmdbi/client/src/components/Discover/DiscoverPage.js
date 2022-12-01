@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import { useDiscover, useDiscoverUpdate } from "../../contexts/DiscoverContext";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import MovieCard from "../shared/MovieCard";
-import "../../index.css";
-import { useMediaQuery } from "@material-ui/core";
-import { Grid, Container, Button, Typography } from "@material-ui/core";
-import "./style.scss";
-import Searcher from "./Searcher/Searcher";
-import MovieCardPhone from "./MovieCardPhone";
+import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/styles';
+import { useDiscover, useDiscoverUpdate } from '../../contexts/DiscoverContext';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import MovieCard from '../shared/MovieCard';
+import '../../index.css';
+import { useMediaQuery } from '@material-ui/core';
+import { Grid, Container, Button, Typography, Box } from '@material-ui/core';
+import './style.scss';
+import Searcher from './Searcher/Searcher';
+import MovieCardPhone from './MovieCardPhone';
+
 const useStyles = makeStyles((theme) => ({
   movie: {
-    maxWidth: "238px",
+    maxWidth: '238px',
   },
   cardsGrid: {
-    marginLeft: "30px",
-    justifyContent: "flex-start",
-    [theme.breakpoints.down("760")]: {
+    marginLeft: '30px',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('760')]: {
       marginLeft: 0,
-      padding: "0px",
-      justifyContent: "center",
+      padding: '0px',
+      justifyContent: 'center',
     },
   },
   posts: {
-    [theme.breakpoints.down("600")]: {
-      marginTop: "30px",
+    [theme.breakpoints.down('600')]: {
+      marginTop: '30px',
     },
   },
 }));
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const MainPage = () => {
   const location = useLocation();
 
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const posts = useDiscover();
   const setPosts = useDiscoverUpdate();
@@ -50,11 +51,11 @@ const MainPage = () => {
   ]);
 
   const [score, setScore] = useState([0, 10]);
-  const [genres, setGenres] = useState(" ");
+  const [genres, setGenres] = useState(' ');
   const [runtime, setRuntime] = useState([0, 360]);
   const [totalPages, setTotalPages] = useState(0);
   const [totalResults, setTotalResults] = useState(0);
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState('en');
 
   const [loadContent, setLoadContent] = useState(false);
 
@@ -63,17 +64,17 @@ const MainPage = () => {
   const submitHandle = async () => {
     if (mediaType === false) {
       const discoverResults = await axios.get(
-        "https://arcane-reef-43492.herokuapp.com/media/movie/discover",
+        `${process.env.REACT_APP_SERVER_URL}/media/movie/discover`,
         {
           params: {
             sortOption,
             page,
 
-            releaseDateMin: releaseDate[0] + "-12-31",
-            releaseDateMax: releaseDate[1] + "-12-31",
+            releaseDateMin: releaseDate[0] + '-12-31',
+            releaseDateMax: releaseDate[1] + '-12-31',
             scoreMin: score[0],
             scoreMax: score[1],
-            genres: genres.replace(" ", ""),
+            genres: genres.replace(' ', ''),
             runtimeMin: runtime[0],
             runtimeMax: runtime[1],
             language,
@@ -88,16 +89,16 @@ const MainPage = () => {
       setPostsLoaded(true);
     } else {
       const discoverResults = await axios.get(
-        "https://arcane-reef-43492.herokuapp.com/media/tv/discover",
+        `${process.env.REACT_APP_SERVER_URL}/media/tv/discover`,
         {
           params: {
             sortOption,
             page,
-            releaseDateMin: releaseDate[0] + "-12-31",
-            releaseDateMax: releaseDate[1] + "-12-31",
+            releaseDateMin: releaseDate[0] + '-12-31',
+            releaseDateMax: releaseDate[1] + '-12-31',
             scoreMin: score[0],
             scoreMax: score[1],
-            genres: genres.replace(" ", ""),
+            genres: genres.replace(' ', ''),
             runtimeMin: runtime[0],
             runtimeMax: runtime[1],
             language,
@@ -117,16 +118,16 @@ const MainPage = () => {
     if (page + 1 <= totalPages) {
       if (mediaType === false) {
         const discoverResults = await axios.get(
-          "https://arcane-reef-43492.herokuapp.com/media/movie/discover",
+          `${process.env.REACT_APP_SERVER_URL}/media/movie/discover`,
           {
             params: {
               sortOption,
               page: page + 1,
-              releaseDateMin: releaseDate[0] + "-12-31",
-              releaseDateMax: releaseDate[1] + "-12-31",
+              releaseDateMin: releaseDate[0] + '-12-31',
+              releaseDateMax: releaseDate[1] + '-12-31',
               scoreMin: score[0],
               scoreMax: score[1],
-              genres: genres.replace(" ", ""),
+              genres: genres.replace(' ', ''),
               runtimeMin: runtime[0],
               runtimeMax: runtime[1],
               language,
@@ -138,16 +139,16 @@ const MainPage = () => {
         setPosts(posts.concat(discoverResults.data.results));
       } else {
         const discoverResults = await axios.get(
-          "https://arcane-reef-43492.herokuapp.com/media/tv/discover",
+          `${process.env.REACT_APP_SERVER_URL}/media/tv/discover`,
           {
             params: {
               sortOption,
               page: page + 1,
-              releaseDateMin: releaseDate[0] + "-01-01",
-              releaseDateMax: releaseDate[1] + "-12-31",
+              releaseDateMin: releaseDate[0] + '-01-01',
+              releaseDateMax: releaseDate[1] + '-12-31',
               scoreMin: score[0],
               scoreMax: score[1],
-              genres: genres.replace(" ", ""),
+              genres: genres.replace(' ', ''),
               runtimeMin: runtime[0],
               runtimeMax: runtime[1],
               language,
@@ -176,7 +177,7 @@ const MainPage = () => {
       {postsLoaded ? (
         <Container>
           <div
-            style={{ display: "flex", marginTop: "20px" }}
+            style={{ display: 'flex', marginTop: '20px' }}
             className="searcherAndResults"
           >
             <Searcher
@@ -201,29 +202,29 @@ const MainPage = () => {
             <div
               className={classes.posts}
               style={{
-                display: "flex",
-                flexDirection: "column",
+                display: 'flex',
+                flexDirection: 'column',
               }}
             >
               {isMobile ? (
                 <Box>
                   {posts.map((post) => (
                     <MovieCardPhone mediaType={mediaType} mediaDetails={post} />
-                  ))}{" "}
+                  ))}{' '}
                   {totalPages > 1 && (
                     <Button
                       onClick={loadMore}
                       variant="contained"
                       style={{
-                        width: "100%",
-                        display: "block",
-                        borderRadius: "10px",
-                        height: "40px",
+                        width: '100%',
+                        display: 'block',
+                        borderRadius: '10px',
+                        height: '40px',
                       }}
                     >
                       <Typography variant="h6">
                         Load More (
-                        {totalPages !== page ? totalResults - page * 20 : 0}{" "}
+                        {totalPages !== page ? totalResults - page * 20 : 0}{' '}
                         results)
                       </Typography>
                     </Button>
@@ -263,15 +264,15 @@ const MainPage = () => {
                       onClick={loadMore}
                       variant="contained"
                       style={{
-                        width: "100%",
-                        display: "block",
-                        borderRadius: "10px",
-                        height: "40px",
+                        width: '100%',
+                        display: 'block',
+                        borderRadius: '10px',
+                        height: '40px',
                       }}
                     >
                       <Typography variant="h6">
                         Load More (
-                        {totalPages !== page ? totalResults - page * 20 : 0}{" "}
+                        {totalPages !== page ? totalResults - page * 20 : 0}{' '}
                         results)
                       </Typography>
                     </Button>

@@ -1,9 +1,9 @@
-const express = require("express");
-const axios = require("axios");
+const express = require('express');
+const axios = require('axios');
 const router = express.Router();
-const cookieParser = require("cookie-parser");
+const cookieParser = require('cookie-parser');
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const token = await axios.get(
       `https://api.themoviedb.org/3/authentication/token/new?api_key=${process.env.API_ENV}`
@@ -11,12 +11,11 @@ router.get("/", async (req, res) => {
 
     res.json(token.data.request_token);
   } catch (err) {
-    console.log("ERROR");
+    console.log('ERROR');
     res.json(err.message);
   }
 });
-router.get("/getSessionId", async (req, res) => {
-  console.log("AAAAAAAAAAA");
+router.get('/getSessionId', async (req, res) => {
   console.log(req.query.token);
   try {
     const session_id = await axios.post(
@@ -25,20 +24,17 @@ router.get("/getSessionId", async (req, res) => {
         request_token: req.query.token,
       }
     );
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://nameless-shore-33653.herokuapp.com"
-    );
+    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
-    console.log("apireqpased");
+    console.log('apireqpased');
     res.writeHead(200, {
-      "Set-Cookie":
+      'Set-Cookie':
         `SID=${session_id.data.session_id}; HttpOnly; Secure; SameSite=None; expires=` +
         new Date(new Date().getTime() + 604800000).toUTCString(),
-      "Acces-Control-Allow-Credentials": true,
+      'Acces-Control-Allow-Credentials': true,
     });
     console.log(res);
     // res.cookie("SID", session_id.data.session_id, {
@@ -47,31 +43,28 @@ router.get("/getSessionId", async (req, res) => {
 
     res.send();
   } catch (err) {
-    console.log("ERROReee");
+    console.log('ERROReee');
     console.log(err.message);
     res.json(err.message);
   }
 });
-router.get("/getAccDetails", async (req, res) => {
+router.get('/getAccDetails', async (req, res) => {
   try {
     const accDetails = await axios.get(
       `https://api.themoviedb.org/3/account?api_key=${process.env.API_ENV}&session_id=${req.cookies.SID}`
     );
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://nameless-shore-33653.herokuapp.com"
-    );
+    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
     res.json(accDetails.data);
   } catch (err) {
-    console.log("Not Signed In");
+    console.log('Not Signed In');
     res.json(err.message);
   }
 });
-router.delete("/logout", async (req, res) => {
+router.delete('/logout', async (req, res) => {
   try {
     axios.delete(
       `https://api.themoviedb.org/3/authentication/session?api_key=${process.env.API_ENV}`,
@@ -79,22 +72,19 @@ router.delete("/logout", async (req, res) => {
         data: { session_id: `${req.cookies.SID}` },
       }
     );
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://nameless-shore-33653.herokuapp.com"
-    );
+    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
 
-    res.setHeader("Set-Cookie", "SID=;Max-Age=0 ");
+    res.setHeader('Set-Cookie', 'SID=;Max-Age=0 ');
 
     res.json();
   } catch (err) {
-    console.log("ERROR");
+    console.log('ERROR');
     console.log(err.message);
     res.json(err.message);
   }
 });
 
-router.get("/addFavourite", async (req, res) => {
+router.get('/addFavourite', async (req, res) => {
   try {
     await axios.post(
       `https://api.themoviedb.org/3/account/${req.query.user_id}/favorite?api_key=${process.env.API_ENV}&session_id=${req.cookies.SID}`,
@@ -104,23 +94,20 @@ router.get("/addFavourite", async (req, res) => {
         favorite: true,
       }
     );
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://nameless-shore-33653.herokuapp.com"
-    );
+    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
-    console.log("succs");
-    res.json("succes");
+    console.log('succs');
+    res.json('succes');
   } catch (err) {
-    console.log("ERRORee");
+    console.log('ERRORee');
     console.log(err.message);
     res.json(err.message);
   }
 });
-router.get("/addWatchlist", async (req, res) => {
+router.get('/addWatchlist', async (req, res) => {
   try {
     await axios.post(
       `https://api.themoviedb.org/3/account/${req.query.user_id}/watchlist?api_key=${process.env.API_ENV}&session_id=${req.cookies.SID}`,
@@ -130,32 +117,26 @@ router.get("/addWatchlist", async (req, res) => {
         watchlist: true,
       }
     );
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://nameless-shore-33653.herokuapp.com"
-    );
+    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
-    res.json("succes");
+    res.json('succes');
   } catch (err) {
     console.log(err.message);
     res.json(err.message);
   }
 });
-router.get("/movie/getAccountStates", async (req, res) => {
+router.get('/movie/getAccountStates', async (req, res) => {
   try {
     const accountStates = await axios.get(
       `https://api.themoviedb.org/3/movie/${req.query.media_id}/account_states?api_key=${process.env.API_ENV}&session_id=${req.cookies.SID}`
     );
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://nameless-shore-33653.herokuapp.com"
-    );
+    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
     res.json(accountStates.data);
   } catch (err) {
@@ -163,20 +144,17 @@ router.get("/movie/getAccountStates", async (req, res) => {
     res.json(err.message);
   }
 });
-router.get("/tv/getAccountStates", async (req, res) => {
+router.get('/tv/getAccountStates', async (req, res) => {
   console.log(req.query.media_id);
   try {
     const accountStates = await axios.get(
       `https://api.themoviedb.org/3/tv/${req.query.media_id}/account_states?api_key=${process.env.API_ENV}&session_id=${req.cookies.SID}`
     );
     console.log(accountStates);
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://nameless-shore-33653.herokuapp.com"
-    );
+    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
     res.json(accountStates.data);
   } catch (err) {
@@ -184,7 +162,7 @@ router.get("/tv/getAccountStates", async (req, res) => {
     res.json(err.message);
   }
 });
-router.get("/addRating", async (req, res) => {
+router.get('/addRating', async (req, res) => {
   console.log(req.query);
   try {
     await axios.post(
@@ -193,13 +171,10 @@ router.get("/addRating", async (req, res) => {
         value: req.query.score,
       }
     );
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://nameless-shore-33653.herokuapp.com"
-    );
+    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
     res.json();
   } catch (err) {
@@ -208,10 +183,10 @@ router.get("/addRating", async (req, res) => {
   }
 });
 
-router.get("/checkSigned", (req, res) => {
+router.get('/checkSigned', (req, res) => {
   // res.setHeader(
   //   "Access-Control-Allow-Origin",
-  //   "https://nameless-shore-33653.herokuapp.com"
+  //   process.env.CLIENT_URL
   // );
   // res.header(
   //   "Access-Control-Allow-Headers",

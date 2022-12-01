@@ -1,27 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Button, Box } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
-import axios from "axios";
-import StarIcon from "@material-ui/icons/Star";
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import axios from 'axios';
+import StarIcon from '@material-ui/icons/Star';
 
 const useStyles = makeStyles({
   action: {
-    borderBottom: "1px solid black",
-    "&:hover": {
-      backgroundColor: "#CCCCCC",
+    borderBottom: '1px solid black',
+    '&:hover': {
+      backgroundColor: '#CCCCCC',
     },
   },
   starContainer: {
-    height: "35px",
+    height: '35px',
   },
   star: {
-    fontSize: "32px",
-    "&:hover": {
-      cursor: "pointer",
-      color: "#0BB5E0",
+    fontSize: '32px',
+    '&:hover': {
+      cursor: 'pointer',
+      color: '#0BB5E0',
 
-      "&~svg": {
-        color: "#0BB5E0",
+      '&~svg': {
+        color: '#0BB5E0',
       },
     },
   },
@@ -34,7 +34,7 @@ const MovieDropLogged = ({ userId, movieId, mediaType }) => {
   const [showRater, setShowRater] = useState(false);
   const addFavourite = async () => {
     await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/authentication/addFavourite",
+      `${process.env.REACT_APP_SERVER_URL}/authentication/addFavourite`,
       {
         withCredentials: true,
         params: {
@@ -47,7 +47,7 @@ const MovieDropLogged = ({ userId, movieId, mediaType }) => {
   };
   const addWatchlist = async () => {
     await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/authentication/addWatchlist",
+      `${process.env.REACT_APP_SERVER_URL}/authentication/addWatchlist`,
       {
         withCredentials: true,
         params: {
@@ -60,7 +60,7 @@ const MovieDropLogged = ({ userId, movieId, mediaType }) => {
   };
   const addRating = async () => {
     await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/authentication/addRating",
+      `${process.env.REACT_APP_SERVER_URL}/authentication/addRating`,
       {
         withCredentials: true,
         params: {
@@ -82,14 +82,14 @@ const MovieDropLogged = ({ userId, movieId, mediaType }) => {
   return (
     <div
       style={{
-        backgroundColor: "white",
-        position: "absolute",
-        top: "33px",
-        left: "50px",
-        width: "175px",
-        zIndex: "20",
-        borderRadius: "5px",
-        boxShadow: "1px 1px 5px gray",
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: '33px',
+        left: '50px',
+        width: '175px',
+        zIndex: '20',
+        borderRadius: '5px',
+        boxShadow: '1px 1px 5px gray',
       }}
     >
       <Box className={classes.action}>
@@ -105,9 +105,9 @@ const MovieDropLogged = ({ userId, movieId, mediaType }) => {
       {showRater && (
         <Box
           style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            justifyContent: "center",
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            justifyContent: 'center',
           }}
           className={classes.starContainer}
         >

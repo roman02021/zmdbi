@@ -1,15 +1,15 @@
-import React from "react";
-import { Typography, Button, Box } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
-import axios from "axios";
+import React from 'react';
+import { Typography, Button, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import axios from 'axios';
 const useStyles = makeStyles({
   action: {
-    "&:hover": {
-      backgroundColor: "#CCCCCC",
+    '&:hover': {
+      backgroundColor: '#CCCCCC',
     },
   },
   margin: {
-    marginLeft: "8px",
+    marginLeft: '8px',
   },
 });
 
@@ -17,25 +17,25 @@ const MovieDropLoggedOut = () => {
   const classes = useStyles();
   const login = async () => {
     const token = await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/authentication"
+      `${process.env.REACT_APP_SERVER_URL}/authentication`
     );
 
     window.location = `https://www.themoviedb.org/authenticate/${token.data}?redirect_to=https://nameless-shore-33653.herokuapp.com/LogginApproved`;
   };
   const signUp = () => {
-    window.open("https://www.themoviedb.org/signup");
+    window.open('https://www.themoviedb.org/signup');
   };
   return (
     <div
       style={{
-        backgroundColor: "white",
-        position: "absolute",
-        top: "33px",
-        left: "40px",
-        width: "200px",
-        zIndex: "10",
-        borderRadius: "5px",
-        boxShadow: "1px 1px 5px gray",
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: '33px',
+        left: '40px',
+        width: '200px',
+        zIndex: '10',
+        borderRadius: '5px',
+        boxShadow: '1px 1px 5px gray',
       }}
     >
       <Typography variant="body2" className={classes.margin}>

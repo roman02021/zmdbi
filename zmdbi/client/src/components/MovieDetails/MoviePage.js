@@ -1,80 +1,80 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Review from "./Review";
-import { Container, Typography, Button, Grid, Box } from "@material-ui/core";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Review from './Review';
+import { Container, Typography, Button, Grid, Box } from '@material-ui/core';
 
-import { Link, useParams } from "react-router-dom";
-import { useMediaQuery } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import "../../linkStyle.scss";
-import TopBilledCast from "./TopBilledCast";
-import TopMovie from "./TopMovie";
-import SideInfo from "./SideInfo";
-import "./styles.scss";
+import { Link, useParams } from 'react-router-dom';
+import { useMediaQuery } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import '../../linkStyle.scss';
+import TopBilledCast from './TopBilledCast';
+import TopMovie from './TopMovie';
+import SideInfo from './SideInfo';
+import './styles.scss';
 const useStyles = makeStyles((theme) => ({
   backrop: {
     zIndex: 0,
-    position: "absolute",
-    height: "632px",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    filter: "brightness(25%)",
-    width: "100%",
+    position: 'absolute',
+    height: '632px',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    filter: 'brightness(25%)',
+    width: '100%',
   },
   backropMobile: {
     zIndex: 0,
-    position: "absolute",
+    position: 'absolute',
 
-    [theme.breakpoints.down("600")]: {
+    [theme.breakpoints.down('600')]: {
       top: 48,
     },
-    [theme.breakpoints.down("500")]: {
+    [theme.breakpoints.down('500')]: {
       top: 56,
     },
-    height: "320px",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    filter: "brightness(25%)",
-    width: "100%",
+    height: '320px',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    filter: 'brightness(25%)',
+    width: '100%',
   },
   maxWidthXl: {
     padding: 0,
-    maxWidth: "1170px",
+    maxWidth: '1170px',
   },
   container: {
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA',
   },
 }));
 
 const MoviePage = () => {
   const classes = useStyles();
-  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isMobile = useMediaQuery('(max-width: 600px)');
   const { media_type, id } = useParams();
   console.log(media_type);
   const [movieDetails, setMovieDetails] = useState({});
   const [reviews, setReviews] = useState([]);
   const [credits, setCredits] = useState([]);
   const [topBilledCast, setTopBilledCast] = useState([]);
-  const [director, setDirector] = useState("");
+  const [director, setDirector] = useState('');
 
   const [lodaded, setLoaded] = useState(false);
 
   async function fetchMovie() {
     try {
       const details = await axios.get(
-        `https://arcane-reef-43492.herokuapp.com/details/${media_type}`,
+        `${process.env.REACT_APP_SERVER_URL}/details/${media_type}`,
         {
           params: { id: id },
         }
       );
       const reviews = await axios.get(
-        `https://arcane-reef-43492.herokuapp.com/details/reviews/${media_type}`,
+        `${process.env.REACT_APP_SERVER_URL}/details/reviews/${media_type}`,
         {
           params: { id: id },
         }
       );
       const credits = await axios.get(
-        `https://arcane-reef-43492.herokuapp.com/details/credits/${media_type}`,
+        `${process.env.REACT_APP_SERVER_URL}/details/credits/${media_type}`,
         {
           params: { id: id },
         }
@@ -85,7 +85,7 @@ const MoviePage = () => {
         .slice(0, 10);
       setTopBilledCast(topBilledCast);
       const director = credits.data.crew.filter(
-        (crew) => crew.job === "Director"
+        (crew) => crew.job === 'Director'
       );
 
       if (director.length > 0) {
@@ -100,19 +100,19 @@ const MoviePage = () => {
     } catch (e) {
       try {
         const details = await axios.get(
-          "https://arcane-reef-43492.herokuapp.com/details/tv",
+          `${process.env.REACT_APP_SERVER_URL}/details/tv`,
           {
             params: { id: id },
           }
         );
         const reviews = await axios.get(
-          "https://arcane-reef-43492.herokuapp.com/details/reviews/tv",
+          `${process.env.REACT_APP_SERVER_URL}/details/reviews/tv`,
           {
             params: { id: id },
           }
         );
         const credits = await axios.get(
-          "https://arcane-reef-43492.herokuapp.com/details/credits/tv",
+          `${process.env.REACT_APP_SERVER_URL}/details/credits/tv`,
           {
             params: { id: id },
           }
@@ -123,7 +123,7 @@ const MoviePage = () => {
           .slice(0, 10);
         setTopBilledCast(topBilledCast);
         const director = credits.data.crew.filter(
-          (crew) => crew.job === "Director"
+          (crew) => crew.job === 'Director'
         );
 
         if (director.length > 0) {
@@ -163,8 +163,8 @@ const MoviePage = () => {
         <div
           className={isMobile ? classes.backropMobile : classes.backrop}
           style={{
-            backgroundColor: "white",
-            width: isMobile ? "780px" : "1920px",
+            backgroundColor: 'white',
+            width: isMobile ? '780px' : '1920px',
           }}
         ></div>
       )}
@@ -175,7 +175,7 @@ const MoviePage = () => {
           director={director}
         />
         {isMobile && (
-          <Box style={{ marginTop: "10px" }}>
+          <Box style={{ marginTop: '10px' }}>
             <Typography variant="h5">Overview</Typography>
             <Typography className={classes.textStyle} variant="body2">
               {movieDetails.overview}
@@ -186,8 +186,8 @@ const MoviePage = () => {
         <Typography
           variant="h5"
           style={{
-            marginTop: "20px",
-            marginBottom: "15px",
+            marginTop: '20px',
+            marginBottom: '15px',
           }}
         >
           Top Billed Cast
@@ -200,9 +200,9 @@ const MoviePage = () => {
               topBilledCast={topBilledCast}
               credits={credits}
             ></TopBilledCast>
-            <div style={{ marginTop: "20px" }}>
+            <div style={{ marginTop: '20px' }}>
               <Link
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: 'none' }}
                 to={{
                   pathname: `/credits/${movieDetails.id}`,
                   state: {
@@ -218,12 +218,12 @@ const MoviePage = () => {
             {reviews.length > 0 ? (
               <Typography
                 variant="h6"
-                style={{ marginTop: "20px", marginLeft: "7px" }}
+                style={{ marginTop: '20px', marginLeft: '7px' }}
               >
                 Reviews ({reviews.length})
               </Typography>
             ) : (
-              <Typography style={{ marginTop: "20px", marginLeft: "7px" }}>
+              <Typography style={{ marginTop: '20px', marginLeft: '7px' }}>
                 No Reviews
               </Typography>
             )}

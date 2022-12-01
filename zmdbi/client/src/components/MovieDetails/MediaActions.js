@@ -1,37 +1,36 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useUserId } from "../../contexts/SignedContext";
-import { IconButton, Box, Typography } from "@material-ui/core";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import WatchLaterIcon from "@material-ui/icons/WatchLater";
-import GradeIcon from "@material-ui/icons/Grade";
-import { makeStyles } from "@material-ui/core";
-import StarIcon from "@material-ui/icons/Star";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
-import axios from "axios";
-import { useSigned } from "../../contexts/SignedContext";
+import React, { useState, useEffect, useRef } from 'react';
+import { useUserId } from '../../contexts/SignedContext';
+import { IconButton, Box, Typography } from '@material-ui/core';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import { makeStyles } from '@material-ui/core';
+import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import axios from 'axios';
+import { useSigned } from '../../contexts/SignedContext';
 const useStyles = makeStyles({
   action: {
-    borderBottom: "1px solid black",
-    "&:hover": {
-      backgroundColor: "#CCCCCC",
+    borderBottom: '1px solid black',
+    '&:hover': {
+      backgroundColor: '#CCCCCC',
     },
   },
   starContainer: {
-    height: "35px",
-    position: "absolute",
-    top: "80px",
-    left: "60px",
-    backgroundColor: "black",
+    height: '35px',
+    position: 'absolute',
+    top: '80px',
+    left: '60px',
+    backgroundColor: 'black',
   },
   star: {
-    fontSize: "32px",
-    "&:hover": {
-      cursor: "pointer",
-      color: "#0BB5E0",
+    fontSize: '32px',
+    '&:hover': {
+      cursor: 'pointer',
+      color: '#0BB5E0',
 
-      "&~svg": {
-        color: "#0BB5E0",
+      '&~svg': {
+        color: '#0BB5E0',
       },
     },
   },
@@ -45,7 +44,7 @@ const MediaActions = ({ movieId, mediaType }) => {
   const [accountStates, setAccountStates] = useState({});
   const addFavourite = async () => {
     await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/authentication/addFavourite",
+      `${process.env.REACT_APP_SERVER_URL}/authentication/addFavourite`,
       {
         withCredentials: true,
         params: {
@@ -58,7 +57,7 @@ const MediaActions = ({ movieId, mediaType }) => {
   };
   const addWatchlist = async () => {
     await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/authentication/addWatchlist",
+      `${process.env.REACT_APP_SERVER_URL}/authentication/addWatchlist`,
       {
         withCredentials: true,
         params: {
@@ -71,7 +70,7 @@ const MediaActions = ({ movieId, mediaType }) => {
   };
   const addRating = async () => {
     await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/authentication/addRating",
+      `${process.env.REACT_APP_SERVER_URL}/authentication/addRating`,
       {
         withCredentials: true,
         params: {
@@ -85,7 +84,7 @@ const MediaActions = ({ movieId, mediaType }) => {
     try {
       if (signed) {
         const accountStates = await axios.get(
-          `https://arcane-reef-43492.herokuapp.com/authentication/${mediaType}/getAccountStates`,
+          `${process.env.REACT_APP_SERVER_URL}/authentication/${mediaType}/getAccountStates`,
           {
             withCredentials: true,
             params: {
@@ -119,17 +118,17 @@ const MediaActions = ({ movieId, mediaType }) => {
   return (
     <div
       style={{
-        display: "flex",
-        backgroundColor: "rgba(255,255,255,0.7)",
-        width: "fit-content",
-        borderRadius: "7px",
-        marginLeft: "10px",
+        display: 'flex',
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        width: 'fit-content',
+        borderRadius: '7px',
+        marginLeft: '10px',
       }}
     >
       <IconButton
         children={
           accountStates.watchlist ? (
-            <WatchLaterIcon style={{ color: "#EEC407" }} />
+            <WatchLaterIcon style={{ color: '#EEC407' }} />
           ) : (
             <WatchLaterIcon color="red" />
           )
@@ -142,7 +141,7 @@ const MediaActions = ({ movieId, mediaType }) => {
         }}
         children={
           accountStates.favorite ? (
-            <FavoriteIcon style={{ color: "red" }} />
+            <FavoriteIcon style={{ color: 'red' }} />
           ) : (
             <FavoriteBorderIcon />
           )
@@ -152,7 +151,7 @@ const MediaActions = ({ movieId, mediaType }) => {
         onClick={() => setShowRater(!showRater)}
         children={
           accountStates.rated ? (
-            <StarIcon style={{ color: "#EF47B6" }} />
+            <StarIcon style={{ color: '#EF47B6' }} />
           ) : (
             <StarBorderIcon />
           )
@@ -162,10 +161,10 @@ const MediaActions = ({ movieId, mediaType }) => {
       {accountStates.rated && (
         <Typography
           style={{
-            color: "black",
-            display: "flex",
-            alignItems: "center",
-            paddingRight: "10px",
+            color: 'black',
+            display: 'flex',
+            alignItems: 'center',
+            paddingRight: '10px',
           }}
         >
           Your rating is {accountStates.rated.value}/10
@@ -175,9 +174,9 @@ const MediaActions = ({ movieId, mediaType }) => {
       {showRater && (
         <Box
           style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            justifyContent: "center",
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            justifyContent: 'center',
           }}
           className={classes.starContainer}
         >

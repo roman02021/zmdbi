@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
-import CloseIcon from "@material-ui/icons/Close";
-import axios from "axios";
-import "./style.scss";
-import SearchIcon from "@material-ui/icons/Search";
-import { useHistory } from "react-router-dom";
-import Box from "@material-ui/core/Box";
+import React, { useState, useEffect, useRef } from 'react';
+import CloseIcon from '@material-ui/icons/Close';
+import axios from 'axios';
+import './style.scss';
+import SearchIcon from '@material-ui/icons/Search';
+import { useHistory } from 'react-router-dom';
+import Box from '@material-ui/core/Box';
 
-import PersonIcon from "@material-ui/icons/Person";
-import { useMediaQuery, ClickAwayListener } from "@material-ui/core";
+import PersonIcon from '@material-ui/icons/Person';
+import { useMediaQuery, ClickAwayListener } from '@material-ui/core';
 
-import HamburgerMenu from "./HamburgerMenu";
+import HamburgerMenu from './HamburgerMenu';
 import {
   useSigned,
   useSignedUpdate,
   useUsername,
   useUsernameUpdate,
   useUserIdUpdate,
-} from "../../contexts/SignedContext";
-import logo from "../../images/logo3.png";
+} from '../../contexts/SignedContext';
+import logo from '../../images/logo3.png';
 
 import {
   AppBar,
@@ -28,126 +28,126 @@ import {
   TextField,
   InputAdornment,
   Typography,
-} from "@material-ui/core";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/styles";
+} from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
-    justifyContent: "space-between",
-    alignContent: "center",
+    width: '100%',
+    justifyContent: 'space-between',
+    alignContent: 'center',
     padding: 0,
-    position: "relative",
+    position: 'relative',
   },
   loginBtn: {
     padding: 0,
   },
   userName: {
-    cursor: "pointer",
-    color: "white",
+    cursor: 'pointer',
+    color: 'white',
   },
   userMenu: {
-    "&:hover": {
-      backgroundColor: "#CCCCCC",
+    '&:hover': {
+      backgroundColor: '#CCCCCC',
     },
     zIndex: 20,
 
-    display: "none",
-    backgroundColor: "white",
-    border: "1px black solid",
+    display: 'none',
+    backgroundColor: 'white',
+    border: '1px black solid',
   },
   userMenuMobileSigned: {
-    position: "absolute",
-    backgroundColor: "white",
-    top: "40px",
-    border: "black 1px solid",
+    position: 'absolute',
+    backgroundColor: 'white',
+    top: '40px',
+    border: 'black 1px solid',
   },
   userMenuMobileUnsigned: {
-    position: "absolute",
-    backgroundColor: "white",
-    top: "40px",
-    border: "black 1px solid",
+    position: 'absolute',
+    backgroundColor: 'white',
+    top: '40px',
+    border: 'black 1px solid',
   },
   userWhole: {
-    "&:hover": {
-      "& > div": {
-        position: "absolute",
-        display: "block",
+    '&:hover': {
+      '& > div': {
+        position: 'absolute',
+        display: 'block',
       },
     },
   },
 
   logoAndDiscover: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    [theme.breakpoints.down("800")]: {
-      display: "none",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('800')]: {
+      display: 'none',
     },
   },
   searchField: {
-    width: "100%",
-    marginLeft: "20px",
-    marginRight: "70px",
-    [theme.breakpoints.down("md")]: {
-      width: "450px",
+    width: '100%',
+    marginLeft: '20px',
+    marginRight: '70px',
+    [theme.breakpoints.down('md')]: {
+      width: '450px',
     },
-    [theme.breakpoints.down("sm")]: {
-      width: "300px",
+    [theme.breakpoints.down('sm')]: {
+      width: '300px',
     },
-    [theme.breakpoints.down("800")]: {
-      display: "none",
+    [theme.breakpoints.down('800')]: {
+      display: 'none',
       width: 0,
     },
   },
 
   mobileSearchBarOn: {},
   mobileSearchBarOff: {
-    right: "0px",
-    top: "30px",
-    width: "98vw",
+    right: '0px',
+    top: '30px',
+    width: '98vw',
   },
   searchInputBase: {
-    position: "absolute",
-    width: "100%",
-    transform: "translateY(-100%)",
-    height: "64px",
-    top: "-0px",
-    transition: "transform 0.5s",
+    position: 'absolute',
+    width: '100%',
+    transform: 'translateY(-100%)',
+    height: '64px',
+    top: '-0px',
+    transition: 'transform 0.5s',
     left: 0,
-    [theme.breakpoints.down("600")]: {
-      height: "48px",
+    [theme.breakpoints.down('600')]: {
+      height: '48px',
     },
-    [theme.breakpoints.down("500")]: {
-      height: "56px",
+    [theme.breakpoints.down('500')]: {
+      height: '56px',
     },
   },
 
   searchInputBaseOn: {
-    height: "64px",
-    position: "absolute",
-    zIndex: "20",
-    width: "100%",
-    top: "-0px",
+    height: '64px',
+    position: 'absolute',
+    zIndex: '20',
+    width: '100%',
+    top: '-0px',
     left: 0,
-    [theme.breakpoints.down("600")]: {
-      height: "48px",
+    [theme.breakpoints.down('600')]: {
+      height: '48px',
     },
-    [theme.breakpoints.down("500")]: {
-      height: "56px",
+    [theme.breakpoints.down('500')]: {
+      height: '56px',
     },
-    transition: "transform 0.5s",
-    transform: "translateY(0%)",
+    transition: 'transform 0.5s',
+    transform: 'translateY(0%)',
   },
 }));
 
 const NavBar = () => {
-  const isMobile = useMediaQuery("(max-width:800px)");
+  const isMobile = useMediaQuery('(max-width:800px)');
   const searchBarRef = useRef();
   console.log(searchBarRef);
   const [showMobileUserMenu, setShowMobileUserMenu] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const classes = useStyles();
 
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -160,16 +160,16 @@ const NavBar = () => {
   const setUserId = useUserIdUpdate();
   const [logged, setLogged] = useState(false);
   //Load font before using Canvas
-  const WebFont = require("webfontloader");
+  const WebFont = require('webfontloader');
   WebFont.load({
     google: {
-      families: ["Roboto"],
+      families: ['Roboto'],
     },
   });
 
   const getAccDetails = async () => {
     const accDetails = await axios.get(
-      "https://arcane-reef-43492.herokuapp.com/authentication/getAccDetails",
+      `${process.env.REACT_APP_SERVER_URL}/authentication/getAccDetails`,
       {
         withCredentials: true,
       }
@@ -182,42 +182,40 @@ const NavBar = () => {
   const logout = async () => {
     try {
       axios.delete(
-        "https://arcane-reef-43492.herokuapp.com/authentication/logout",
+        `${process.env.REACT_APP_SERVER_URL}/authentication/logout`,
         {
           withCredentials: true,
         }
       );
-      console.log("LOGOTU");
       setSigned(false);
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
     }
   };
 
   const login = async () => {
     try {
       const token = await axios.get(
-        "https://arcane-reef-43492.herokuapp.com/authentication"
+        `${process.env.REACT_APP_SERVER_URL}/authentication`
       );
 
       window.location = `https://www.themoviedb.org/authenticate/${token.data}?redirect_to=https://nameless-shore-33653.herokuapp.com/LogginApproved`;
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
     }
   };
   const checkSigned = async () => {
     try {
       const signed = await axios.get(
-        "https://arcane-reef-43492.herokuapp.com/authentication/checkSigned",
+        `${process.env.REACT_APP_SERVER_URL}/authentication/checkSigned`,
         {
           withCredentials: true,
         }
       );
-      console.log("checkSigned res", signed);
       setSigned(signed.data);
       getAccDetails();
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
     }
   };
 
@@ -232,19 +230,19 @@ const NavBar = () => {
     <AppBar
       position="static"
       style={{
-        backgroundColor: "#032541",
+        backgroundColor: '#032541',
       }}
     >
       <Container className="navBarContentContainer">
         <Toolbar className={classes.root}>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <HamburgerMenu />
 
             <Link
               className="logoPhone"
               to="/"
               style={{
-                display: "none",
+                display: 'none',
               }}
             >
               <img src={logo} alt="logo"></img>
@@ -254,10 +252,10 @@ const NavBar = () => {
               <Link
                 to="/"
                 style={{
-                  color: "white",
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
+                  color: 'white',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
               >
                 <img src={logo} alt="logo"></img>
@@ -269,50 +267,50 @@ const NavBar = () => {
                 <Box className="subMenu" component="div">
                   <Link
                     to={{
-                      pathname: "/discover",
+                      pathname: '/discover',
                       state: {
-                        sortOption: "popularity.desc",
+                        sortOption: 'popularity.desc',
                         mediaType: false,
                       },
                     }}
-                    style={{ color: "black", textDecoration: "none" }}
+                    style={{ color: 'black', textDecoration: 'none' }}
                   >
                     <Typography className="subMenuItem">Popular</Typography>
                   </Link>
 
                   <Link
                     to={{
-                      pathname: "/discover",
+                      pathname: '/discover',
                       state: {
-                        sortOption: "vote_average.desc",
+                        sortOption: 'vote_average.desc',
                         mediaType: false,
                       },
                     }}
-                    style={{ color: "black", textDecoration: "none" }}
+                    style={{ color: 'black', textDecoration: 'none' }}
                   >
                     <Typography className="subMenuItem">Top Rated</Typography>
                   </Link>
                   <Link
                     to={{
-                      pathname: "/discover",
+                      pathname: '/discover',
                       state: {
-                        sortOption: "release_date.desc",
+                        sortOption: 'release_date.desc',
                         mediaType: false,
                       },
                     }}
-                    style={{ color: "black", textDecoration: "none" }}
+                    style={{ color: 'black', textDecoration: 'none' }}
                   >
                     <Typography className="subMenuItem">New</Typography>
                   </Link>
                   <Link
                     to={{
-                      pathname: "/discover",
+                      pathname: '/discover',
                       state: {
-                        sortOption: "vote_count.desc",
+                        sortOption: 'vote_count.desc',
                         mediaType: false,
                       },
                     }}
-                    style={{ color: "black", textDecoration: "none" }}
+                    style={{ color: 'black', textDecoration: 'none' }}
                   >
                     <Typography className="subMenuItem">Discover</Typography>
                   </Link>
@@ -326,50 +324,50 @@ const NavBar = () => {
                 <Box className="subMenu" component="div">
                   <Link
                     to={{
-                      pathname: "/discover",
+                      pathname: '/discover',
                       state: {
-                        sortOption: "popularity.desc",
+                        sortOption: 'popularity.desc',
                         mediaType: true,
                       },
                     }}
-                    style={{ color: "black", textDecoration: "none" }}
+                    style={{ color: 'black', textDecoration: 'none' }}
                   >
                     <Typography className="subMenuItem">Popular</Typography>
                   </Link>
 
                   <Link
                     to={{
-                      pathname: "/discover",
+                      pathname: '/discover',
                       state: {
-                        sortOption: "vote_average.desc",
+                        sortOption: 'vote_average.desc',
                         mediaType: true,
                       },
                     }}
-                    style={{ color: "black", textDecoration: "none" }}
+                    style={{ color: 'black', textDecoration: 'none' }}
                   >
                     <Typography className="subMenuItem">Top Rated</Typography>
                   </Link>
                   <Link
                     to={{
-                      pathname: "/discover",
+                      pathname: '/discover',
                       state: {
-                        sortOption: "release_date.desc",
+                        sortOption: 'release_date.desc',
                         mediaType: true,
                       },
                     }}
-                    style={{ color: "black", textDecoration: "none" }}
+                    style={{ color: 'black', textDecoration: 'none' }}
                   >
                     <Typography className="subMenuItem">New</Typography>
                   </Link>
                   <Link
                     to={{
-                      pathname: "/discover",
+                      pathname: '/discover',
                       state: {
-                        sortOption: "vote_count.desc",
+                        sortOption: 'vote_count.desc',
                         mediaType: true,
                       },
                     }}
-                    style={{ color: "black", textDecoration: "none" }}
+                    style={{ color: 'black', textDecoration: 'none' }}
                   >
                     <Typography className="subMenuItem">Discover</Typography>
                   </Link>
@@ -386,7 +384,7 @@ const NavBar = () => {
 
                 state: searchQuery,
               });
-              setSearchQuery("");
+              setSearchQuery('');
               setMobileSearchBar(false);
             }}
           >
@@ -423,7 +421,7 @@ const NavBar = () => {
 
                 state: searchQuery,
               });
-              setSearchQuery("");
+              setSearchQuery('');
             }}
           >
             <TextField
@@ -442,11 +440,11 @@ const NavBar = () => {
                       type="submit"
                       variant="text"
                       style={{
-                        backgroundColor: "transparent",
+                        backgroundColor: 'transparent',
                         padding: 0,
-                        marginRight: "5px",
-                        maxWidth: "10px",
-                        minWidth: "10px",
+                        marginRight: '5px',
+                        maxWidth: '10px',
+                        minWidth: '10px',
                       }}
                     >
                       <SearchIcon />
@@ -456,19 +454,19 @@ const NavBar = () => {
               }}
             ></TextField>
           </form>
-          {console.log("isMobile: ", isMobile, "signed: ", signed)}
+          {console.log('isMobile: ', isMobile, 'signed: ', signed)}
           {isMobile ||
             (signed ? (
               <div className={classes.userWhole}>
                 <Typography
-                  style={{ marginRight: "10px" }}
+                  style={{ marginRight: '10px' }}
                   className={classes.userName}
                 >
                   {username}
                 </Typography>
 
                 <Box className={classes.userMenu} component="div">
-                  {" "}
+                  {' '}
                   <Button onClick={() => logout()} variant="text">
                     Logout
                   </Button>
@@ -478,19 +476,19 @@ const NavBar = () => {
               <Button
                 onClick={() => login()}
                 variant="text"
-                style={{ marginTop: "2px", backgroundColor: "transparent" }}
+                style={{ marginTop: '2px', backgroundColor: 'transparent' }}
               >
-                {console.log("ICH BINS")}
-                <Typography variant="body1" style={{ color: "white" }}>
+                {console.log('ICH BINS')}
+                <Typography variant="body1" style={{ color: 'white' }}>
                   Login
                 </Typography>
               </Button>
             ))}
 
           {isMobile && (
-            <Box style={{ position: "relative", display: "flex" }}>
+            <Box style={{ position: 'relative', display: 'flex' }}>
               <Button
-                style={{ position: "relative" }}
+                style={{ position: 'relative' }}
                 variant="text"
                 onClick={() => setShowMobileUserMenu(!showUserMenu)}
               >
@@ -518,7 +516,7 @@ const NavBar = () => {
                           <Button onClick={() => login()}>Login</Button>
                           <Button
                             onClick={() =>
-                              window.open("https://www.themoviedb.org/signup")
+                              window.open('https://www.themoviedb.org/signup')
                             }
                           >
                             Register
@@ -533,8 +531,8 @@ const NavBar = () => {
                 }}
                 variant="text"
                 style={{
-                  padding: "0",
-                  backgroundColor: "transparent",
+                  padding: '0',
+                  backgroundColor: 'transparent',
                 }}
               >
                 <SearchIcon />

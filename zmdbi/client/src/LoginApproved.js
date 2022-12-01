@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useSignedUpdate } from "./contexts/SignedContext";
-import axios from "axios";
-import { useLocation, useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useSignedUpdate } from './contexts/SignedContext';
+import axios from 'axios';
+import { useLocation, useHistory } from 'react-router-dom';
 
-import { Button, Typography, Container } from "@material-ui/core";
+import { Button, Typography, Container } from '@material-ui/core';
 const LoginApproved = () => {
   const setSigned = useSignedUpdate();
   const history = useHistory();
@@ -11,17 +11,14 @@ const LoginApproved = () => {
   const [loginSucess, setLoginSucess] = useState(false);
   console.log(history);
   const location = useLocation();
-  const token = new URLSearchParams(location.search).get("request_token");
-  console.log("token", token);
+  const token = new URLSearchParams(location.search).get('request_token');
+  console.log('token', token);
   const createSessionId = async () => {
     try {
-      axios.get(
-        "https://arcane-reef-43492.herokuapp.com/authentication/getSessionId",
-        {
-          params: { token: token },
-          withCredentials: true,
-        }
-      );
+      axios.get(`${process.env.SERVER_URL}/authentication/getSessionId`, {
+        params: { token: token },
+        withCredentials: true,
+      });
       setSigned(true);
       setLoginSucess(true);
     } catch (err) {
@@ -36,11 +33,11 @@ const LoginApproved = () => {
   return (
     <Container
       style={{
-        height: "60vh",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
-        flexDirection: "column",
+        height: '60vh',
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       {loginSucess ? (
@@ -50,10 +47,10 @@ const LoginApproved = () => {
       )}
 
       <Button
-        style={{ marginTop: "20px", fontSize: "30px" }}
+        style={{ marginTop: '20px', fontSize: '30px' }}
         variant="text"
         onClick={() =>
-          (window.location = "https://nameless-shore-33653.herokuapp.com/")
+          (window.location = 'https://nameless-shore-33653.herokuapp.com/')
         }
       >
         GO BACK TO MAIN PAGE
