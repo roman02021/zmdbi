@@ -23,14 +23,17 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: [
+      process.env.CLIENT_URL,
+      'http://localhost:3000',
+      'http://zmdbi.netlify.app',
+    ],
     credentials: true,
   })
 );
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
-  console.log('hello');
   res.send('hello');
 });
 
